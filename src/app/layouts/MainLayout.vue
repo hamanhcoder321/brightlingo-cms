@@ -1,164 +1,249 @@
 <template>
-  <div class="flex h-screen bg-slate-50 text-slate-900 overflow-hidden font-sans">
+  <div class="flex min-h-screen bg-[#F4F1EB] text-[#1D2A2E] font-sans antialiased">
     <!-- Desktop Sidebar -->
-    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 shrink-0">
-      <!-- Brand Logo -->
-      <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-100">
-        <div class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
-          BL
+    <aside
+      class="w-64 shrink-0 bg-[#1D2A2E] text-[#D5DCDE] p-4 flex flex-col justify-between min-h-screen border-r border-[#2C3B40] select-none"
+    >
+      <div class="flex flex-col gap-6">
+        <!-- Logo & Branding -->
+        <div class="flex items-center gap-2.5 px-2 pt-2">
+          <svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true" class="shrink-0">
+            <path
+              d="M15 6h24a11 11 0 0 1 11 11v10a11 11 0 0 1-11 11H24l-9 8v-8.6A11 11 0 0 1 4 27V17A11 11 0 0 1 15 6z"
+              fill="#FFFFFF"
+            ></path>
+            <path
+              d="M37 28h13a9 9 0 0 1 9 9v6a9 9 0 0 1-6 8.5V58l-7.5-5.5H37a9 9 0 0 1-9-9v-6.5a9 9 0 0 1 9-9z"
+              fill="#E8873A"
+              stroke="#1D2A2E"
+              stroke-width="3"
+            ></path>
+          </svg>
+          <div class="flex flex-col leading-tight">
+            <span class="font-serif font-bold text-[21px] text-white tracking-tight">EngNest</span>
+            <span class="text-[13px] text-[#AEB8BB]">Quản trị</span>
+          </div>
         </div>
-        <div>
-          <h1 class="text-base font-bold text-slate-800 leading-tight">BrightLingo</h1>
-          <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Hệ thống Quản trị</p>
-        </div>
+
+        <!-- Navigation Menu -->
+        <nav aria-label="Quản trị" class="flex flex-col gap-1 text-[15px] font-medium">
+          <!-- Tổng quan -->
+          <router-link
+            to="/dashboard"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/dashboard')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path>
+            </svg>
+            <span>Tổng quan</span>
+          </router-link>
+
+          <!-- Khóa học -->
+          <router-link
+            to="/courses"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/courses')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+              <path d="M10 9.5v5l4.5-2.5z"></path>
+            </svg>
+            <span>Khóa học</span>
+          </router-link>
+
+          <!-- Đơn hàng -->
+          <router-link
+            to="/orders"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/orders')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <path d="M6 3h12l2 4H4zM4 7v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7M9 11h6"></path>
+            </svg>
+            <span>Đơn hàng</span>
+          </router-link>
+
+          <!-- Yêu cầu tư vấn -->
+          <router-link
+            to="/leads"
+            :class="[
+              'flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/leads')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <span class="flex items-center gap-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+                <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path>
+              </svg>
+              <span>Yêu cầu tư vấn</span>
+            </span>
+            <span class="bg-[#E8873A] text-[#1D2A2E] text-[13px] font-bold px-2 py-0.5 rounded-full leading-none">
+              7
+            </span>
+          </router-link>
+
+          <!-- Mã giảm giá -->
+          <router-link
+            to="/coupons"
+            :class="[
+              'flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/coupons')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#AEB8BB] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <span class="flex items-center gap-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+                <path d="M3 12V4h8l10 10-8 8z"></path>
+                <circle cx="7.5" cy="8.5" r="1.5"></circle>
+              </svg>
+              <span>Mã giảm giá</span>
+            </span>
+            <span class="bg-[#33403F] text-[#D5DCDE] text-[12px] font-bold px-1.5 py-0.5 rounded leading-none">
+              GĐ 2
+            </span>
+          </router-link>
+
+          <!-- Bài viết -->
+          <div class="flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] text-[#AEB8BB] cursor-not-allowed">
+            <span class="flex items-center gap-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+                <path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"></path>
+              </svg>
+              <span>Bài viết</span>
+            </span>
+            <span class="bg-[#33403F] text-[#D5DCDE] text-[12px] font-bold px-1.5 py-0.5 rounded leading-none">
+              GĐ 2
+            </span>
+          </div>
+
+          <!-- Divider -->
+          <div class="h-[1px] bg-[#33403F] my-2"></div>
+
+          <!-- Ngân hàng & Email -->
+          <router-link
+            to="/email-templates"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/email-templates')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <rect x="3" y="6" width="18" height="13" rx="2"></rect>
+              <path d="M3 10h18M7 15h3"></path>
+            </svg>
+            <span>Ngân hàng & Email</span>
+          </router-link>
+
+          <!-- Giao diện & Banner -->
+          <router-link
+            to="/settings"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/settings')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <path d="M3 9h18M9 21V9"></path>
+            </svg>
+            <span>Giao diện & Banner</span>
+          </router-link>
+
+          <!-- SEO & Google -->
+          <router-link
+            to="/settings"
+            class="flex items-center gap-3 h-[46px] px-3 rounded-[10px] text-[#D5DCDE] hover:bg-[#27373C] hover:text-white transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+            <span>SEO & Google</span>
+          </router-link>
+
+          <!-- Chính sách & Hỏi đáp / Audit -->
+          <router-link
+            to="/audit-logs"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/audit-logs')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path>
+              <path d="M14 3v5h5M9 13h6M9 17h4"></path>
+            </svg>
+            <span>Chính sách & Hỏi đáp</span>
+          </router-link>
+        </nav>
       </div>
 
-      <!-- Navigation Links -->
-      <div class="flex-1 overflow-y-auto py-4 px-3 space-y-6">
-        <!-- Main Section -->
-        <div>
-          <div class="px-3 mb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            Vận hành kinh doanh
-          </div>
-          <nav class="space-y-1">
-            <router-link
-              v-for="item in primaryNav"
-              :key="item.path"
-              :to="item.path"
-              :class="[
-                'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                isActive(item.path)
-                  ? 'bg-indigo-50 text-indigo-700 font-semibold'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-              ]"
-            >
-              <component :is="item.icon" class="w-4 h-4 shrink-0" />
-              <span>{{ item.title }}</span>
-            </router-link>
-          </nav>
-        </div>
-
-        <!-- System Section -->
-        <div>
-          <div class="px-3 mb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            Cấu hình & Nhật ký
-          </div>
-          <nav class="space-y-1">
-            <router-link
-              v-for="item in secondaryNav"
-              :key="item.path"
-              :to="item.path"
-              :class="[
-                'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                isActive(item.path)
-                  ? 'bg-indigo-50 text-indigo-700 font-semibold'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-              ]"
-            >
-              <component :is="item.icon" class="w-4 h-4 shrink-0" />
-              <span>{{ item.title }}</span>
-            </router-link>
-          </nav>
-        </div>
-      </div>
-
-      <!-- User footer in sidebar -->
-      <div class="p-3 border-t border-slate-100 bg-slate-50/50">
-        <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200">
+      <!-- User footer profile -->
+      <div class="pt-4 border-t border-[#33403F] mt-6">
+        <div class="flex items-center justify-between p-2 rounded-lg bg-[#27373C]/60 text-xs">
           <div class="flex items-center gap-2 min-w-0">
-            <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs shrink-0">
+            <div class="w-7 h-7 rounded-full bg-[#0B6E6E] text-white font-bold flex items-center justify-center shrink-0">
               AD
             </div>
-            <div class="truncate">
-              <p class="text-xs font-semibold text-slate-800 truncate">{{ adminUser.name || 'Admin User' }}</p>
-              <p class="text-[10px] text-slate-400 truncate">{{ adminUser.email || 'admin@brightlingo.vn' }}</p>
+            <div class="truncate leading-tight">
+              <div class="text-[#D5DCDE] font-semibold truncate">{{ adminUser.name || 'Admin User' }}</div>
+              <div class="text-[11px] text-[#AEB8BB] truncate">{{ adminUser.email || 'admin@engnest.vn' }}</div>
             </div>
           </div>
           <button
             @click="handleLogout"
             title="Đăng xuất"
-            class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+            class="p-1.5 text-[#AEB8BB] hover:text-red-400 hover:bg-[#33403F] rounded transition-colors"
           >
-            <LogOut class="w-4 h-4" />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
           </button>
         </div>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-      <!-- Top Header -->
-      <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0">
-        <div class="flex items-center gap-4">
-          <h2 class="text-lg font-bold text-slate-800">
-            {{ currentTitle }}
-          </h2>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
-            Hệ thống ổn định
-          </span>
-          <button
-            @click="handleLogout"
-            class="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
-          >
-            <LogOut class="w-3.5 h-3.5" />
-            Đăng xuất
-          </button>
-        </div>
-      </header>
-
-      <!-- Router Content Outlet -->
-      <main class="flex-1 overflow-y-auto p-6">
-        <router-view />
-      </main>
-    </div>
+    <!-- Main Content Outlet Area -->
+    <main class="flex-1 min-w-0 bg-[#F4F1EB] overflow-y-auto">
+      <router-view />
+    </main>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import {
-  LayoutDashboard,
-  BookOpen,
-  FolderTree,
-  ShoppingCart,
-  Ticket,
-  Users,
-  Mail,
-  Settings,
-  History,
-  LogOut,
-} from "lucide-vue-next";
 import { useAuthStore } from "@modules/auth/store/auth.store";
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 
-const adminUser = computed(() => authStore.user || { name: "Quản trị viên", email: "admin@brightlingo.vn" });
-
-const primaryNav = [
-  { title: "Tổng quan", icon: LayoutDashboard, path: "/dashboard" },
-  { title: "Khóa học & Tài liệu", icon: BookOpen, path: "/courses" },
-  { title: "Danh mục khóa học", icon: FolderTree, path: "/courses/categories" },
-  { title: "Đơn hàng", icon: ShoppingCart, path: "/orders" },
-  { title: "Mã giảm giá", icon: Ticket, path: "/coupons" },
-  { title: "Tư vấn & Leads", icon: Users, path: "/leads" },
-];
-
-const secondaryNav = [
-  { title: "Email Templates", icon: Mail, path: "/email-templates" },
-  { title: "Cài đặt hệ thống", icon: Settings, path: "/settings" },
-  { title: "Nhật ký hoạt động", icon: History, path: "/audit-logs" },
-];
-
-const currentTitle = computed(() => {
-  return (route.meta?.title as string) || "BrightLingo CMS";
-});
+const adminUser = computed(() => authStore.user || { name: "Quản trị viên", email: "admin@engnest.vn" });
 
 function isActive(path: string): boolean {
   if (path === "/dashboard") {

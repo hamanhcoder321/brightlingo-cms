@@ -22,16 +22,15 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
 
-    /* Path Aliases */
-    "baseUrl": ".",
+    /* Path Aliases (Modern TypeScript 5+ & 6+ without deprecated baseUrl) */
     "paths": {
-      "@app/*": ["src/app/*"],
-      "@modules/*": ["src/modules/*"],
-      "@shared/*": ["src/shared/*"],
-      "@assets/*": ["src/assets/*"],
-      "@styles/*": ["src/styles/*"],
-      "@locales/*": ["src/locales/*"],
-      "@/*": ["src/*"]
+      "@app/*": ["./src/app/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@locales/*": ["./src/locales/*"],
+      "@/*": ["./src/*"]
     },
 
     /* Vue */

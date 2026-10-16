@@ -71,7 +71,18 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Be Vietnam Pro', sans-serif;
+    background-color: #F4F1EB;
+    color: #1D2A2E;
+    font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+  }
+  a {
+    color: #0B6E6E;
+  }
+  a:hover {
+    color: #08585A;
+  }
+  th {
+    font-weight: 600;
+    text-align: left;
   }
 }

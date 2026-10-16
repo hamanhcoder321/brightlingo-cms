@@ -48,28 +48,10 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   async function login(credentials: LoginCredentials) {
-    // If backend doesn't have custom admin/login yet, provide seamless mock/fallback
-    try {
-      const response = await authApi.login(credentials);
-      setToken(response.accessToken);
-      setUser(response.user);
-      return response;
-    } catch (error) {
-      // Development fallback for initial skeleton exploration if API endpoint is not yet mounted
-      if (import.meta.env.DEV && credentials.email.includes("admin")) {
-        const dummyToken = "mock_admin_token_" + Date.now();
-        const dummyUser: AdminUser = {
-          id: "admin-1",
-          name: "Quản trị viên Hệ thống",
-          email: credentials.email,
-          role: "superadmin",
-        };
-        setToken(dummyToken);
-        setUser(dummyUser);
-        return { accessToken: dummyToken, user: dummyUser };
-      }
-      throw error;
-    }
+    const response = await authApi.login(credentials);
+    setToken(response.accessToken);
+    setUser(response.user);
+    return response;
   }
 
   async function logout() {

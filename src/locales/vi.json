@@ -1,0 +1,87 @@
+{
+  "common": {
+    "welcome": "Chào mừng",
+    "loading": "Đang tải...",
+    "save": "Lưu thay đổi",
+    "cancel": "Hủy",
+    "create": "Tạo mới",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "search": "Tìm kiếm",
+    "account": "Tài khoản",
+    "settings": "Cài đặt",
+    "logout": "Đăng xuất",
+    "profile": "Hồ sơ",
+    "actions": "Hành động",
+    "status": "Trạng thái",
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Ngày cập nhật",
+    "yes": "Có",
+    "no": "Không",
+    "confirm": "Xác nhận",
+    "close": "Đóng",
+    "refresh": "Làm mới",
+    "noData": "Không có dữ liệu",
+    "pleaseWait": "Vui lòng đợi",
+    "back": "Quay lại",
+    "filter": "Bộ lọc",
+    "all": "Tất cả"
+  },
+  "nav": {
+    "dashboard": "Tổng quan",
+    "courses": "Khóa học & Tài liệu",
+    "categories": "Danh mục khóa học",
+    "orders": "Đơn hàng",
+    "coupons": "Mã giảm giá",
+    "leads": "Tư vấn & Leads",
+    "emailTemplates": "Email Templates",
+    "settings": "Cài đặt hệ thống",
+    "auditLogs": "Nhật ký hoạt động"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "email": "Email quản trị",
+    "password": "Mật khẩu",
+    "loginTitle": "BrightLingo CMS",
+    "loginSubtitle": "Hệ thống Quản trị & Vận hành Nền tảng Học tiếng Anh",
+    "validation": {
+      "emailRequired": "Vui lòng nhập email",
+      "passwordRequired": "Vui lòng nhập mật khẩu"
+    }
+  },
+  "courses": {
+    "title": "Quản lý Khóa học & Tài liệu",
+    "name": "Tên khóa học",
+    "slug": "Đường dẫn (Slug)",
+    "type": "Loại",
+    "price": "Giá bán",
+    "originalPrice": "Giá gốc",
+    "resourceLink": "Link tài liệu chính thức",
+    "status": "Trạng thái hiển thị"
+  },
+  "orders": {
+    "title": "Quản lý Đơn hàng",
+    "orderCode": "Mã đơn hàng",
+    "customer": "Khách hàng",
+    "amount": "Tổng tiền",
+    "paymentStatus": "Thanh toán",
+    "resendEmail": "Gửi lại tài liệu",
+    "resendConfirm": "Bạn có chắc chắn muốn gửi lại tài liệu cho đơn hàng này?"
+  },
+  "coupons": {
+    "title": "Quản lý Mã giảm giá",
+    "code": "Mã coupon",
+    "discount": "Mức giảm",
+    "usageLimit": "Giới hạn sử dụng",
+    "usedCount": "Đã dùng"
+  },
+  "leads": {
+    "title": "Tư vấn & Leads",
+    "fullName": "Họ và tên",
+    "phone": "Số điện thoại",
+    "course": "Khóa học quan tâm",
+    "status": "Tiến độ xử lý"
+  }
+}

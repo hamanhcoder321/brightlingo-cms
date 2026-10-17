@@ -69,6 +69,8 @@ export interface Course {
   viewsCount?: number;
   buyers_count?: number;
   buyersCount?: number;
+  realRevenue?: number;
+  real_revenue?: number;
   students_count?: string;
   studentsCount?: string;
   isFeatured?: boolean;

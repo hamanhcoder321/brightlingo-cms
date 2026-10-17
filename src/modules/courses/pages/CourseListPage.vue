@@ -321,7 +321,7 @@
 
             <!-- Doanh thu -->
             <td class="py-3.5 px-2 text-right tabular-nums font-semibold text-[15px] text-[#1D2A2E]">
-              {{ formatVND((course.price || 0) * (course.buyersCount || 0)) }}
+              {{ formatVND(course.realRevenue !== undefined ? course.realRevenue : (course.price || 0) * (course.buyersCount || 0)) }}
             </td>
 
             <!-- Thao tác -->
@@ -454,9 +454,8 @@ const isLoading = ref(true);
 const searchQuery = ref("");
 const statusFilter = ref<"ALL" | "PUBLISHED" | "DRAFT">("ALL");
 
-// Featured course state (persisted in localStorage)
-const FEATURED_STORAGE_KEY = "engnest_featured_course_id";
-const featuredId = ref<string>(localStorage.getItem(FEATURED_STORAGE_KEY) || "c1");
+// Featured course state (synced with PostgreSQL Database)
+const featuredId = ref<string>("");
 
 // Toast state
 const toastMessage = ref<string | null>(null);
@@ -510,20 +509,32 @@ const filteredCourses = computed(() => {
   });
 });
 
-// Featured logic
+// Featured logic: synchronized with Database
 function isFeatured(id: string): boolean {
-  return featuredId.value === id;
+  const c = courses.value.find((item) => item.id === id);
+  return Boolean(c?.isFeatured || featuredId.value === id);
 }
 
-function toggleFeatured(course: Course) {
-  if (featuredId.value === course.id) {
-    featuredId.value = "";
-    localStorage.removeItem(FEATURED_STORAGE_KEY);
-    showToast(`Đã bỏ chọn khóa nổi bật.`);
-  } else {
-    featuredId.value = course.id;
-    localStorage.setItem(FEATURED_STORAGE_KEY, course.id);
-    showToast(`Đã đặt "${course.title || course.name}" làm khóa nổi bật trang chủ!`);
+async function toggleFeatured(course: Course) {
+  try {
+    const updated = await courseApi.setFeatured(course.id);
+    const willBeFeatured = Boolean(updated.isFeatured);
+
+    // Cập nhật trạng thái nổi bật duy nhất trên danh sách
+    courses.value = courses.value.map((c) => ({
+      ...c,
+      isFeatured: c.id === course.id ? willBeFeatured : false,
+    }));
+    featuredId.value = willBeFeatured ? course.id : "";
+
+    if (willBeFeatured) {
+      showToast(`Đã đặt "${course.title || course.name}" làm khóa nổi bật trang chủ!`);
+    } else {
+      showToast(`Đã bỏ chọn khóa nổi bật.`);
+    }
+  } catch (err) {
+    console.error("Lỗi khi thay đổi khóa nổi bật:", err);
+    showToast("Không thể cập nhật khóa nổi bật. Vui lòng thử lại!");
   }
 }
 
@@ -535,7 +546,8 @@ function formatVND(val: number | undefined | null): string {
 
 // Public URL for Course page
 function getCoursePublicUrl(slug: string): string {
-  return `http://localhost:3000/courses/${slug}`;
+  const feUrl = import.meta.env.VITE_FRONTEND_URL || "http://localhost:3000";
+  return `${feUrl}/khoa-hoc/${slug}`;
 }
 
 // Clipboard copy
@@ -589,11 +601,9 @@ async function fetchCourses() {
     const res = await courseApi.getCourses();
     courses.value = res.items || [];
 
-    // If no featured course selected yet, pick the first one or one with isFeatured
-    if (!featuredId.value && courses.value.length > 0) {
-      const explicit = courses.value.find((c) => c.isFeatured);
-      featuredId.value = explicit ? explicit.id : (courses.value[0]?.id ?? "");
-    }
+    // Đồng bộ trạng thái nổi bật từ Database
+    const explicit = courses.value.find((c) => c.isFeatured);
+    featuredId.value = explicit ? explicit.id : "";
   } catch (err) {
     console.error("Error fetching courses from API:", err);
   } finally {

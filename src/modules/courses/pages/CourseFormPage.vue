@@ -1022,7 +1022,8 @@ const savingsAmount = computed(() => {
 });
 
 const previewUrl = computed(() => {
-  return `http://localhost:3000/courses/${form.slug || ""}`;
+  const feUrl = import.meta.env.VITE_FRONTEND_URL || "http://localhost:3000";
+  return `${feUrl}/khoa-hoc/${form.slug || ""}`;
 });
 
 function formatVND(val: number): string {

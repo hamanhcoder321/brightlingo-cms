@@ -6,8 +6,8 @@
         <h1 class="m-0 font-serif font-bold text-[32px] text-[#1D2A2E] leading-tight">
           Tổng quan bán hàng
         </h1>
-        <span class="bg-[#FDF0E3] text-[#B4531A] text-[13px] font-semibold px-2.5 py-0.5 rounded-full">
-          Số liệu minh họa
+        <span class="bg-[#E4F3EA] text-[#155C35] text-[13px] font-semibold px-2.5 py-0.5 rounded-full">
+          Dữ liệu thời gian thực
         </span>
       </div>
 
@@ -256,79 +256,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import ResendConfirmModal from "@modules/orders/components/ResendConfirmModal.vue";
 import type { Order } from "@modules/orders/types/order.types";
+import { dashboardApi } from "../api/dashboard.api";
 
 const selectedPeriod = ref("30days");
 
 // Metric summary
 const currentMetrics = ref({
-  revenue: "18.748.000đ",
-  revenueGrowth: "+12% so với 30 ngày trước",
-  paidOrders: 52,
-  totalOrdersText: "trên 83 đơn được tạo",
-  conversionRate: "63%",
-  expiredOrdersText: "31 đơn hết hạn QR",
-  leadsCount: 7,
+  revenue: "0đ",
+  revenueGrowth: "Thu nhập thực tế",
+  paidOrders: 0,
+  totalOrdersText: "0 đơn được tạo",
+  conversionRate: "0%",
+  expiredOrdersText: "0 đơn đang chờ",
+  leadsCount: 0,
 });
 
-// Bar chart data for 14 days
-const vals = [0.8, 1.2, 0.4, 1.6, 2.0, 0.8, 1.2, 1.6, 0.4, 2.4, 1.2, 0.8, 2.0, 1.6];
-const maxVal = 2.4;
-
-const bars = computed(() => {
-  return vals.map((v, i) => ({
-    v: v.toFixed(1).replace(".", ","),
-    d: `${i + 1}/10`,
-    height: Math.round((v / maxVal) * 140),
-    isToday: i === vals.length - 1,
-  }));
-});
+// Bar chart data for 14 days (thực tế từ Database)
+const bars = ref<Array<{ v: string; d: string; height: number; isToday: boolean }>>([]);
 
 // Course performance table data
-const performanceCourses = ref([
-  {
-    name: "Mẹ dạy con tiếng Anh tại nhà",
-    slug: "me-day-con-tieng-anh",
-    views: "3.420",
-    created: 61,
-    paid: 38,
-    convText: "1,1%",
-    convPercent: Math.round((1.1 / 1.2) * 100),
-    revenue: "15.162.000đ",
-  },
-  {
-    name: "1.000 câu tiếng Anh mẹ nói với con",
-    slug: "1000-cau-me-noi-voi-con",
-    views: "1.180",
-    created: 14,
-    paid: 9,
-    convText: "0,8%",
-    convPercent: Math.round((0.8 / 1.2) * 100),
-    revenue: "1.791.000đ",
-  },
-  {
-    name: "Tiếng Anh giao tiếp cho người đi làm",
-    slug: "tieng-anh-nguoi-di-lam",
-    views: "640",
-    created: 5,
-    paid: 3,
-    convText: "0,5%",
-    convPercent: Math.round((0.5 / 1.2) * 100),
-    revenue: "1.197.000đ",
-  },
-  {
-    name: "Phát âm chuẩn từ đầu cho người lớn",
-    slug: "phat-am-chuan-nguoi-lon",
-    views: "410",
-    created: 3,
-    paid: 2,
-    convText: "0,5%",
-    convPercent: Math.round((0.5 / 1.2) * 100),
-    revenue: "598.000đ",
-  },
-]);
+const performanceCourses = ref<any[]>([]);
 
 // Recent orders table
 const statusConfig: Record<string, { label: string; style: string }> = {
@@ -348,66 +298,92 @@ interface RecentOrderRow {
   time: string;
 }
 
-const rawOrders: RecentOrderRow[] = [
-  {
-    code: "EN-7K2Q9",
-    name: "Nguyễn Thị Lan",
-    email: "lan.nguyen@gmail.com",
-    course: "Mẹ dạy con tiếng Anh",
-    amount: "399.000đ",
-    k: "paid",
-    mail: "Đã gửi 10:42",
-    time: "Hôm nay 10:41",
-  },
-  {
-    code: "EN-7K2P4",
-    name: "Trần Văn Hùng",
-    email: "hung.tv@yahoo.com",
-    course: "Giao tiếp người đi làm",
-    amount: "399.000đ",
-    k: "wait",
-    mail: "—",
-    time: "Hôm nay 10:36",
-  },
-  {
-    code: "EN-7K2M1",
-    name: "Phạm Thu Hà",
-    email: "thuha.pham@gmail.com",
-    course: "1.000 câu mẹ nói với con",
-    amount: "199.000đ",
-    k: "paid",
-    mail: "Đã gửi 09:58",
-    time: "Hôm nay 09:57",
-  },
-  {
-    code: "EN-7K2J8",
-    name: "Lê Minh Tâm",
-    email: "tamle@gmail.com",
-    course: "Mẹ dạy con tiếng Anh",
-    amount: "399.000đ",
-    k: "exp",
-    mail: "—",
-    time: "Hôm qua 21:14",
-  },
-  {
-    code: "EN-7K2H3",
-    name: "Đỗ Thị Mai",
-    email: "mai.do@gmail.com",
-    course: "Mẹ dạy con tiếng Anh",
-    amount: "399.000đ",
-    k: "paid",
-    mail: "Đã gửi 20:03",
-    time: "Hôm qua 20:02",
-  },
-];
+const rawOrders = ref<RecentOrderRow[]>([]);
 
 const recentOrders = computed(() => {
-  return rawOrders.map((o) => ({
+  return rawOrders.value.map((o) => ({
     ...o,
     statusLabel: statusConfig[o.k]?.label || o.k,
     statusStyle: statusConfig[o.k]?.style || "",
     canResend: o.k === "paid",
   }));
+});
+
+// Load dữ liệu đơn hàng và doanh thu thực tế từ backend
+async function loadRealStats() {
+  try {
+    const summary: any = await dashboardApi.getSummary();
+    if (summary) {
+      const totalRev = Number(summary.totalRevenue || summary.kpi?.totalRevenue || 0);
+      const paid = Number(summary.paidOrders || summary.kpi?.paidOrders || 0);
+      const total = Number(summary.totalOrders || summary.kpi?.totalOrders || 0);
+      const pending = Number(summary.pendingOrders || summary.kpi?.pendingOrders || 0);
+      const leads = Number(summary.totalLeads ?? summary.newLeads ?? 0);
+      const convRate = total > 0 ? Math.round((paid / total) * 100) : 0;
+
+      currentMetrics.value.revenue = new Intl.NumberFormat("vi-VN").format(totalRev) + "đ";
+      currentMetrics.value.paidOrders = paid;
+      currentMetrics.value.totalOrdersText = `trên ${total} đơn được tạo`;
+      currentMetrics.value.conversionRate = `${convRate}%`;
+      currentMetrics.value.expiredOrdersText = `${pending} đơn đang chờ thanh toán`;
+      currentMetrics.value.leadsCount = leads;
+
+      // 1. Biểu đồ doanh thu 14 ngày thực tế
+      const chartList = summary.chart14Days || [];
+      if (chartList.length > 0) {
+        const maxRev = Math.max(...chartList.map((item: any) => Number(item.revenue) || 0), 50000);
+        bars.value = chartList.map((item: any, idx: number) => {
+          const rev = Number(item.revenue) || 0;
+          return {
+            v: rev > 0 ? (rev >= 1000000 ? `${(rev / 1000000).toFixed(1).replace(".", ",")}tr` : `${Math.round(rev / 1000)}k`) : "0",
+            d: item.date_label || `${idx + 1}/10`,
+            height: rev > 0 ? Math.max(14, Math.round((rev / maxRev) * 140)) : 6,
+            isToday: idx === chartList.length - 1,
+          };
+        });
+      }
+
+      // 2. Đơn hàng gần đây
+      const ordersList = summary.recentOrders || [];
+      if (ordersList.length > 0) {
+        rawOrders.value = ordersList.map((o: any) => ({
+          code: o.order_code,
+          name: o.customer_name || "Học viên",
+          email: o.customer_email || "—",
+          course: o.course_title || "Khóa học",
+          amount: new Intl.NumberFormat("vi-VN").format(o.total_amount) + "đ",
+          k: o.status === "PAID" ? "paid" : o.status === "PENDING" ? "wait" : "exp",
+          mail: o.paid_at ? "Đã xác nhận" : "—",
+          time: new Date(o.created_at).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) + " " + new Date(o.created_at).toLocaleDateString("vi-VN"),
+        }));
+      }
+
+      // 3. Hiệu quả từng khóa học (Lượt xem thực tế & Đơn bán thực tế)
+      const coursesList = summary.coursePerformance || [];
+      if (coursesList.length > 0) {
+        performanceCourses.value = coursesList.map((c: any) => {
+          const views = Number(c.views_count) || 0;
+          const convRate = views > 0 ? ((c.paid / views) * 100).toFixed(1) : "0,0";
+          return {
+            name: c.name,
+            slug: c.slug,
+            views: new Intl.NumberFormat("vi-VN").format(views),
+            created: c.created || 0,
+            paid: c.paid || 0,
+            convText: `${convRate.replace(".", ",")}%`,
+            convPercent: Math.min(100, Math.round((Number(convRate) / 2) * 100)),
+            revenue: new Intl.NumberFormat("vi-VN").format(c.revenue || 0) + "đ",
+          };
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Failed to load real dashboard stats:", err);
+  }
+}
+
+onMounted(() => {
+  loadRealStats();
 });
 
 // Modal state for Resend Email

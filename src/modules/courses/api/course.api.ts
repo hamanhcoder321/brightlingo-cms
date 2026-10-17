@@ -82,13 +82,17 @@ export const courseApi = {
             buyersCount: item.buyersCount ?? item.buyers_count ?? 0,
             viewsCount: item.viewsCount ?? item.views_count ?? 0,
             status: item.status || "PUBLISHED",
+            isFeatured: Boolean(item.isFeatured ?? item.is_featured),
           })),
           total: data.length,
         };
       }
       if (data && Array.isArray(data.items)) {
         return {
-          items: data.items,
+          items: data.items.map((item: any) => ({
+            ...item,
+            isFeatured: Boolean(item.isFeatured ?? item.is_featured),
+          })),
           total: data.total || data.items.length,
         };
       }
@@ -112,12 +116,18 @@ export const courseApi = {
         seoDescription: data.seoDescription || data.seo_description || data.tag_badge || "",
         tagBadge: data.tagBadge || data.tag_badge || "",
         duration: data.videoDemoDuration || data.duration || "9 giờ",
+        isFeatured: Boolean(data.isFeatured ?? data.is_featured),
       };
     } catch {
       const found = fallbackCourses.find((c) => c.id === id || c.slug === id);
       if (found) return found;
       throw new Error("Course not found");
     }
+  },
+
+  setFeatured: async (id: string): Promise<Course> => {
+    const res = await apiService.patch(`/courses/${id}/featured`);
+    return res.data?.data || res.data;
   },
 
   createCourse: async (data: any): Promise<Course> => {

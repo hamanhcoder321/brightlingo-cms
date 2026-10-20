@@ -92,8 +92,8 @@
               </svg>
               <span>Yêu cầu tư vấn</span>
             </span>
-            <span class="bg-[#E8873A] text-[#1D2A2E] text-[13px] font-bold px-2 py-0.5 rounded-full leading-none">
-              7
+            <span v-if="newLeadsCount > 0" class="bg-[#E8873A] text-[#1D2A2E] text-[13px] font-bold px-2 py-0.5 rounded-full leading-none">
+              {{ newLeadsCount }}
             </span>
           </router-link>
 
@@ -157,7 +157,7 @@
             to="/settings"
             :class="[
               'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
-              isActive('/settings')
+              isActive('/settings') || isActive('/banners')
                 ? 'bg-[#0B6E6E] text-white font-semibold'
                 : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
             ]"
@@ -171,8 +171,13 @@
 
           <!-- SEO & Google -->
           <router-link
-            to="/settings"
-            class="flex items-center gap-3 h-[46px] px-3 rounded-[10px] text-[#D5DCDE] hover:bg-[#27373C] hover:text-white transition-colors"
+            to="/seo"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/seo')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
               <circle cx="11" cy="11" r="7"></circle>
@@ -235,15 +240,36 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@modules/auth/store/auth.store";
+import { leadApi } from "@modules/leads/api/lead.api";
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const newLeadsCount = ref(0);
 
 const adminUser = computed(() => authStore.user || { name: "Quản trị viên", email: "admin@engnest.vn" });
+
+async function fetchNewLeadsCount() {
+  try {
+    newLeadsCount.value = await leadApi.getNewCount();
+  } catch {
+    newLeadsCount.value = 0;
+  }
+}
+
+watch(
+  () => route.path,
+  () => {
+    fetchNewLeadsCount();
+  },
+);
+
+onMounted(() => {
+  fetchNewLeadsCount();
+});
 
 function isActive(path: string): boolean {
   if (path === "/dashboard") {

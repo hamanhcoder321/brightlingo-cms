@@ -1,135 +1,233 @@
 <template>
-  <div class="space-y-6">
+  <div class="p-6 md:p-8 pb-14 flex flex-col gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h2 class="text-xl font-bold text-slate-900">Quản lý Đơn hàng</h2>
-        <p class="text-xs text-slate-500 mt-0.5">
+        <h1 class="m-0 font-serif font-bold text-[32px] text-[#1D2A2E] leading-tight">
+          Quản lý Đơn hàng
+        </h1>
+        <p class="m-0 text-[#4C5A60] text-[15px] mt-0.5">
           Theo dõi lịch sử đơn hàng, đối soát giao dịch VietQR và hỗ trợ gửi lại tài liệu cho học viên.
         </p>
       </div>
 
       <div class="flex items-center gap-2">
         <button
+          type="button"
           @click="fetchOrders"
-          class="px-3.5 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+          :disabled="isLoading"
+          class="h-[46px] px-4 rounded-[10px] border-[1.5px] border-[#D8D2C7] bg-white hover:bg-[#FAF7F2] text-[#4C5A60] hover:text-[#1D2A2E] cursor-pointer flex items-center gap-2 transition-colors shadow-xs font-semibold text-[15px]"
+          title="Tải lại danh sách"
         >
-          <RotateCcw class="w-3.5 h-3.5" />
-          Làm mới
+          <RotateCcw :class="['w-4 h-4', isLoading && 'animate-spin text-[#0B6E6E]']" />
+          <span>Làm mới</span>
         </button>
       </div>
     </div>
 
     <!-- Filter & Search Toolbar -->
-    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center gap-4">
-      <div class="flex-1 relative">
-        <Search class="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+    <div class="flex flex-wrap gap-3 items-center">
+      <!-- Search Input -->
+      <label class="flex-1 min-w-[280px] relative flex items-center">
+        <span class="absolute left-3.5 flex text-[#4C5A60]" aria-hidden="true">
+          <Search class="w-[18px] h-[18px]" />
+        </span>
         <input
           v-model="searchQuery"
-          type="text"
-          placeholder="Tìm theo mã đơn, tên, email hoặc SĐT khách hàng..."
-          class="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          type="search"
+          placeholder="Tìm theo mã đơn, tên, email hoặc SĐT khách hàng…"
+          class="w-full h-[46px] box-border border-[1.5px] border-[#D8D2C7] focus:border-[#0B6E6E] rounded-[10px] pl-[42px] pr-9 text-[15px] bg-white text-[#1D2A2E] placeholder:text-[#8C989C] focus:outline-none transition-colors"
         />
-      </div>
-
-      <div class="flex items-center gap-2">
-        <select
-          v-model="statusFilter"
-          class="px-3 py-2 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 bg-white"
+        <button
+          v-if="searchQuery"
+          @click="searchQuery = ''"
+          type="button"
+          class="absolute right-3 text-slate-400 hover:text-slate-600 text-sm p-1 cursor-pointer"
+          title="Xóa tìm kiếm"
         >
-          <option value="">Tất cả trạng thái</option>
-          <option value="Paid">Đã thanh toán (Paid)</option>
-          <option value="Pending">Chờ thanh toán (Pending)</option>
-          <option value="Cancelled">Đã hủy (Cancelled)</option>
-        </select>
+          ✕
+        </button>
+      </label>
+
+      <!-- Status Filter Tabs -->
+      <div
+        role="group"
+        aria-label="Lọc trạng thái"
+        class="flex gap-1.5 bg-white border border-[#E5E0D7] rounded-[12px] p-1 shadow-xs flex-wrap"
+      >
+        <button
+          type="button"
+          @click="statusFilter = ''"
+          :class="[
+            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[14px] cursor-pointer transition-colors',
+            statusFilter === ''
+              ? 'bg-[#E6F2F0] text-[#08585A]'
+              : 'bg-transparent text-[#4C5A60] hover:text-[#1D2A2E]'
+          ]"
+        >
+          Tất cả ({{ orders.length }})
+        </button>
+
+        <button
+          type="button"
+          @click="statusFilter = 'Paid'"
+          :class="[
+            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[14px] cursor-pointer transition-colors',
+            statusFilter === 'Paid'
+              ? 'bg-[#E6F2F0] text-[#08585A]'
+              : 'bg-transparent text-[#4C5A60] hover:text-[#1D2A2E]'
+          ]"
+        >
+          Đã thanh toán ({{ paidCount }})
+        </button>
+
+        <button
+          type="button"
+          @click="statusFilter = 'Pending'"
+          :class="[
+            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[14px] cursor-pointer transition-colors',
+            statusFilter === 'Pending'
+              ? 'bg-[#E6F2F0] text-[#08585A]'
+              : 'bg-transparent text-[#4C5A60] hover:text-[#1D2A2E]'
+          ]"
+        >
+          Chờ thanh toán ({{ pendingCount }})
+        </button>
+
+        <button
+          type="button"
+          @click="statusFilter = 'Cancelled'"
+          :class="[
+            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[14px] cursor-pointer transition-colors',
+            statusFilter === 'Cancelled'
+              ? 'bg-[#E6F2F0] text-[#08585A]'
+              : 'bg-transparent text-[#4C5A60] hover:text-[#1D2A2E]'
+          ]"
+        >
+          Đã hủy ({{ cancelledCount }})
+        </button>
       </div>
     </div>
 
     <!-- Orders Table -->
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
-            <tr>
-              <th class="py-3 px-4">Mã đơn hàng</th>
-              <th class="py-3 px-4">Khách hàng</th>
-              <th class="py-3 px-4">Khóa học</th>
-              <th class="py-3 px-4">Tổng thanh toán</th>
-              <th class="py-3 px-4">Trạng thái</th>
-              <th class="py-3 px-4">Thời gian</th>
-              <th class="py-3 px-4 text-right">Thao tác</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100">
-            <tr v-if="isLoading" class="text-center">
-              <td colspan="7" class="py-8 text-slate-400">Đang tải danh sách đơn hàng...</td>
-            </tr>
-            <tr v-else-if="filteredOrders.length === 0" class="text-center">
-              <td colspan="7" class="py-8 text-slate-400">Không tìm thấy đơn hàng nào.</td>
-            </tr>
+    <div class="bg-white border border-[#E5E0D7] rounded-[16px] overflow-x-auto shadow-xs">
+      <table class="w-full min-w-[960px] border-collapse text-[15px]">
+        <thead>
+          <tr class="text-[#4C5A60] border-b border-[#E5E0D7] bg-[#FAF7F2]">
+            <th class="py-3 px-4 font-semibold text-left">Mã đơn hàng</th>
+            <th class="py-3 px-3 font-semibold text-left">Khách hàng</th>
+            <th class="py-3 px-3 font-semibold text-left">Khóa học</th>
+            <th class="py-3 px-3 font-semibold text-left">Tổng thanh toán</th>
+            <th class="py-3 px-3 font-semibold text-left">Trạng thái</th>
+            <th class="py-3 px-3 font-semibold text-left">Thời gian</th>
+            <th class="py-3 px-4 font-semibold text-right">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Loading skeleton -->
+          <template v-if="isLoading">
             <tr
-              v-else
-              v-for="order in filteredOrders"
-              :key="order.id"
-              class="hover:bg-slate-50/70 transition-colors"
+              v-for="i in 4"
+              :key="'skeleton-' + i"
+              class="border-b border-[#EFEBE4] animate-pulse"
             >
-              <td class="py-3 px-4 font-mono font-bold text-slate-900">
-                {{ order.order_code }}
-              </td>
-              <td class="py-3 px-4">
-                <div class="font-semibold text-slate-800">{{ order.customer_name }}</div>
-                <div class="text-[11px] text-slate-500">{{ order.customer_email }}</div>
-                <div class="text-[10px] text-slate-400 font-mono">{{ order.customer_phone }}</div>
-              </td>
-              <td class="py-3 px-4">
-                <div class="font-medium text-slate-800 max-w-[200px] truncate" :title="order.course_title">
-                  {{ order.course_title }}
-                </div>
-                <div v-if="order.coupon_code" class="text-[10px] text-pink-600 font-semibold">
-                  Mã: {{ order.coupon_code }} (-{{ formatCurrency(order.discount_amount) }})
+              <td class="p-3.5 px-4"><div class="h-4 bg-[#ECE7DE] rounded w-24"></div></td>
+              <td class="p-3.5 px-3">
+                <div class="space-y-1">
+                  <div class="h-4 bg-[#ECE7DE] rounded w-32"></div>
+                  <div class="h-3 bg-[#ECE7DE] rounded w-44"></div>
                 </div>
               </td>
-              <td class="py-3 px-4">
-                <div class="font-bold text-slate-900">{{ formatCurrency(order.final_amount) }}</div>
-              </td>
-              <td class="py-3 px-4">
-                <span
-                  :class="[
-                    'px-2 py-0.5 rounded-full text-[10px] font-semibold inline-block',
-                    order.status === 'Paid'
-                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                      : order.status === 'Pending'
-                      ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                      : 'bg-slate-100 text-slate-600 border border-slate-200'
-                  ]"
-                >
-                  {{ order.status === 'Paid' ? 'Đã thanh toán' : (order.status === 'Pending' ? 'Chờ thanh toán' : 'Đã hủy') }}
-                </span>
-              </td>
-              <td class="py-3 px-4 text-slate-500">
-                {{ formatDateTime(order.created_at) }}
-              </td>
-              <td class="py-3 px-4 text-right space-x-2">
-                <!-- BR-05: Resend button active ONLY when status is Paid -->
-                <button
-                  :disabled="order.status !== 'Paid'"
-                  @click="openResendModal(order)"
-                  :class="[
-                    'px-2.5 py-1 rounded text-[11px] font-semibold transition-colors inline-flex items-center gap-1',
-                    order.status === 'Paid'
-                      ? 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100'
-                      : 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                  ]"
-                  :title="order.status === 'Paid' ? 'Gửi lại tài liệu qua Email' : 'Chỉ gửi lại khi đơn hàng ĐÃ THANH TOÁN (BR-05)'"
-                >
-                  <Send class="w-3 h-3" />
-                  Gửi lại
-                </button>
-              </td>
+              <td class="p-3.5 px-3"><div class="h-4 bg-[#ECE7DE] rounded w-40"></div></td>
+              <td class="p-3.5 px-3"><div class="h-4 bg-[#ECE7DE] rounded w-24"></div></td>
+              <td class="p-3.5 px-3"><div class="h-6 bg-[#ECE7DE] rounded-full w-24"></div></td>
+              <td class="p-3.5 px-3"><div class="h-4 bg-[#ECE7DE] rounded w-28"></div></td>
+              <td class="p-3.5 px-4 text-right"><div class="h-8 bg-[#ECE7DE] rounded w-20 ml-auto"></div></td>
             </tr>
-          </tbody>
-        </table>
-      </div>
+          </template>
+
+          <tr v-else-if="filteredOrders.length === 0" class="text-center">
+            <td colspan="7" class="py-12 text-[#8C989C]">Không tìm thấy đơn hàng nào.</td>
+          </tr>
+
+          <tr
+            v-else
+            v-for="order in filteredOrders"
+            :key="order.id"
+            class="border-b border-[#EFEBE4] hover:bg-[#FAF7F2]/60 transition-colors"
+          >
+            <!-- Mã đơn hàng -->
+            <td class="py-3.5 px-4 font-mono font-bold text-[#1D2A2E]">
+              {{ order.order_code }}
+            </td>
+
+            <!-- Khách hàng -->
+            <td class="py-3.5 px-3">
+              <div class="font-bold text-[#1D2A2E] leading-snug">{{ order.customer_name }}</div>
+              <div class="text-[13px] text-[#4C5A60] mt-0.5">{{ order.customer_email }}</div>
+              <div class="text-[12px] text-[#78888D] font-mono mt-0.5">{{ order.customer_phone }}</div>
+            </td>
+
+            <!-- Khóa học -->
+            <td class="py-3.5 px-3">
+              <div class="font-medium text-[#1D2A2E] max-w-[220px] truncate" :title="order.course_title">
+                {{ order.course_title }}
+              </div>
+              <div v-if="order.coupon_code" class="text-[12px] text-[#0B6E6E] font-semibold mt-0.5">
+                Mã: {{ order.coupon_code }} (-{{ formatCurrency(order.discount_amount) }})
+              </div>
+            </td>
+
+            <!-- Tổng thanh toán -->
+            <td class="py-3.5 px-3">
+              <div class="font-bold text-[#1D2A2E] text-[16px]">
+                {{ formatCurrency(order.final_amount) }}
+              </div>
+            </td>
+
+            <!-- Trạng thái -->
+            <td class="py-3.5 px-3">
+              <span
+                :class="[
+                  'px-3 py-1 rounded-full text-[12px] font-semibold inline-block',
+                  order.status === 'Paid'
+                    ? 'bg-[#E4F3EA] text-[#155C35]'
+                    : order.status === 'Pending'
+                    ? 'bg-[#FEF3EB] text-[#B25E09]'
+                    : 'bg-[#ECE7DE] text-[#4C5A60]'
+                ]"
+              >
+                {{ order.status === 'Paid' ? 'Đã thanh toán' : (order.status === 'Pending' ? 'Chờ thanh toán' : 'Đã hủy') }}
+              </span>
+            </td>
+
+            <!-- Thời gian -->
+            <td class="py-3.5 px-3 text-[13.5px] text-[#78888D] whitespace-nowrap">
+              {{ formatDateTime(order.created_at) }}
+            </td>
+
+            <!-- Thao tác -->
+            <td class="py-3.5 px-4 text-right">
+              <!-- BR-05: Resend button active ONLY when status is Paid -->
+              <button
+                type="button"
+                :disabled="order.status !== 'Paid'"
+                @click="openResendModal(order)"
+                :class="[
+                  'h-8 px-3 rounded-[8px] font-semibold text-[13px] inline-flex items-center gap-1.5 transition-colors',
+                  order.status === 'Paid'
+                    ? 'border border-[#0B6E6E] bg-white text-[#0B6E6E] hover:bg-[#E6F2F0] cursor-pointer'
+                    : 'border border-[#D8D2C7] bg-[#FAF7F2] text-[#8C989C] cursor-not-allowed opacity-60'
+                ]"
+                :title="order.status === 'Paid' ? 'Gửi lại tài liệu qua Email' : 'Chỉ gửi lại khi đơn hàng ĐÃ THANH TOÁN (BR-05)'"
+              >
+                <Send class="w-3.5 h-3.5" />
+                <span>Gửi lại</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Resend Email Confirmation Modal (BR-06) -->
@@ -158,6 +256,10 @@ const statusFilter = ref("");
 
 const isModalOpen = ref(false);
 const selectedOrder = ref<Order | null>(null);
+
+const paidCount = computed(() => orders.value.filter((o) => o.status === "Paid").length);
+const pendingCount = computed(() => orders.value.filter((o) => o.status === "Pending").length);
+const cancelledCount = computed(() => orders.value.filter((o) => o.status === "Cancelled").length);
 
 const filteredOrders = computed(() => {
   return orders.value.filter((o) => {

@@ -4,6 +4,7 @@ import { MainLayout } from "@app/layouts";
 export const settingsRoutes: RouteRecordRaw[] = [
   {
     path: "/settings",
+    alias: ["/banners"],
     component: MainLayout,
     children: [
       {
@@ -11,7 +12,22 @@ export const settingsRoutes: RouteRecordRaw[] = [
         name: "settings",
         component: () => import("../pages/SettingsPage.vue"),
         meta: {
-          title: "Cài đặt Hệ thống & Thanh toán",
+          title: "Giao diện & Banner",
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/seo",
+    component: MainLayout,
+    children: [
+      {
+        path: "",
+        name: "seo-google",
+        component: () => import("../pages/SeoGooglePage.vue"),
+        meta: {
+          title: "SEO & Google",
           requiresAuth: true,
         },
       },

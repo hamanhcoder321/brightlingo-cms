@@ -1,5 +1,5 @@
 <template>
-  <div class="p-7 md:p-8 flex flex-col gap-6 max-w-[1440px] mx-auto text-[#1D2A2E]">
+  <div class="p-6 md:p-8 pb-14 flex flex-col gap-6 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
     <!-- Top Bar: Title, Badge, Filter, Add Course Button -->
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center gap-3 flex-wrap">

@@ -265,10 +265,10 @@ const filteredOrders = computed(() => {
   return orders.value.filter((o) => {
     const matchSearch =
       !searchQuery.value ||
-      o.order_code.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      o.customer_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      o.customer_email.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      o.customer_phone.includes(searchQuery.value);
+      (o.order_code || "").toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      (o.customer_name || "").toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      (o.customer_email || "").toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      (o.customer_phone || "").includes(searchQuery.value);
     const matchStatus = !statusFilter.value || o.status === statusFilter.value;
     return matchSearch && matchStatus;
   });

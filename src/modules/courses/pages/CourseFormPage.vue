@@ -143,17 +143,18 @@
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-3 border-[1.5px] border-dashed border-[#D8D2C7] rounded-xl p-3 bg-[#FAF7F2] opacity-90">
-            <label class="flex gap-2.5 items-center text-[15px] cursor-pointer">
+          <div class="flex flex-wrap items-center gap-3 border-[1.5px] border-dashed border-[#D8D2C7] rounded-xl p-3 bg-[#FAF7F2] opacity-60 cursor-not-allowed select-none">
+            <label class="flex gap-2.5 items-center text-[15px] cursor-not-allowed pointer-events-none">
               <input
                 v-model="allowCoupon"
                 type="checkbox"
-                class="w-5 h-5 accent-[#0B6E6E] cursor-pointer"
+                disabled
+                class="w-5 h-5 accent-[#0B6E6E] cursor-not-allowed"
               />
               <span>Cho phép áp dụng mã giảm giá cho khóa này</span>
             </label>
             <span class="bg-[#ECE7DE] text-[#4C5A60] text-[12px] font-bold px-2 py-0.5 rounded">GĐ 2</span>
-            <span class="text-[13px] text-[#4C5A60]">Tạo mã ở menu “Mã giảm giá”: % hoặc số tiền, số lượt, hạn dùng.</span>
+            <span class="text-[13px] text-[#4C5A60]">Tính năng Mã giảm giá sẽ phát triển ở Giai đoạn 2.</span>
           </div>
         </section>
 
@@ -843,7 +844,7 @@ const isDeleting = ref(false);
 const showDeleteModal = ref(false);
 
 const categories = ref<CourseCategory[]>([]);
-const allowCoupon = ref(true);
+const allowCoupon = ref(false);
 const mainKeyword = ref("mẹ dạy con tiếng anh");
 const imageAlt = ref("Mẹ đọc truyện tiếng Anh cho con");
 const lastSavedText = ref("Chưa lưu thay đổi");
@@ -1169,8 +1170,24 @@ async function handleSave() {
     showToast("Vui lòng nhập tên khóa học.");
     return;
   }
-  if (!form.slug.trim()) {
+  const cleanSlug = form.slug.trim().toLowerCase();
+  if (!cleanSlug) {
     showToast("Vui lòng nhập đường dẫn slug.");
+    return;
+  }
+  const RESERVED_COURSE_SLUGS = new Set([
+    "admin", "api", "checkout", "payment", "payments", "policies", "policy",
+    "chinh-sach", "khoa-hoc", "courses", "orders", "leads", "coupons", "auth",
+    "login", "register", "dang-ky", "dashboard", "settings", "danh-gia", "loi-ich",
+    "giao-tai-lieu-so", "chinh-sach-thanh-toan", "chinh-sach-bao-mat", "dieu-khoan-su-dung",
+    "uploads", "sitemap", "robots", "categories"
+  ]);
+  if (RESERVED_COURSE_SLUGS.has(cleanSlug)) {
+    showToast(`Đường dẫn "${cleanSlug}" trùng với route hệ thống được bảo lưu. Vui lòng chọn slug khác.`);
+    return;
+  }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(cleanSlug)) {
+    showToast("Đường dẫn (slug) chỉ được chứa chữ thường không dấu, số và dấu gạch nối.");
     return;
   }
   if (!form.resourceLink.trim()) {

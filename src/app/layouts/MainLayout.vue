@@ -97,15 +97,10 @@
             </span>
           </router-link>
 
-          <!-- Mã giảm giá -->
-          <router-link
-            to="/coupons"
-            :class="[
-              'flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
-              isActive('/coupons')
-                ? 'bg-[#0B6E6E] text-white font-semibold'
-                : 'text-[#AEB8BB] hover:bg-[#27373C] hover:text-white'
-            ]"
+          <!-- Mã giảm giá (Vô hiệu hóa - Giai đoạn 2) -->
+          <div
+            title="Tính năng phát triển ở Giai đoạn 2"
+            class="flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] text-[#AEB8BB] opacity-60 cursor-not-allowed select-none"
           >
             <span class="flex items-center gap-3">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
@@ -117,10 +112,13 @@
             <span class="bg-[#33403F] text-[#D5DCDE] text-[12px] font-bold px-1.5 py-0.5 rounded leading-none">
               GĐ 2
             </span>
-          </router-link>
+          </div>
 
-          <!-- Bài viết -->
-          <div class="flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] text-[#AEB8BB] cursor-not-allowed">
+          <!-- Bài viết (Vô hiệu hóa - Giai đoạn 2) -->
+          <div
+            title="Tính năng phát triển ở Giai đoạn 2"
+            class="flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] text-[#AEB8BB] opacity-60 cursor-not-allowed select-none"
+          >
             <span class="flex items-center gap-3">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
                 <path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"></path>
@@ -135,22 +133,19 @@
           <!-- Divider -->
           <div class="h-[1px] bg-[#33403F] my-2"></div>
 
-          <!-- Ngân hàng & Email -->
-          <router-link
-            to="/email-templates"
-            :class="[
-              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
-              isActive('/email-templates')
-                ? 'bg-[#0B6E6E] text-white font-semibold'
-                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
-            ]"
+          <!-- Ngân hàng & Email (Vô hiệu hóa - Đấu nối tự động PayOS & Resend) -->
+          <div
+            title="Cấu hình tự động qua cổng PayOS Webhook & Resend"
+            class="flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] text-[#AEB8BB] opacity-60 cursor-not-allowed select-none"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <rect x="3" y="6" width="18" height="13" rx="2"></rect>
-              <path d="M3 10h18M7 15h3"></path>
-            </svg>
-            <span>Ngân hàng & Email</span>
-          </router-link>
+            <span class="flex items-center gap-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+                <rect x="3" y="6" width="18" height="13" rx="2"></rect>
+                <path d="M3 10h18M7 15h3"></path>
+              </svg>
+              <span>Ngân hàng & Email</span>
+            </span>
+          </div>
 
           <!-- Giao diện & Banner -->
           <router-link
@@ -200,7 +195,7 @@
               <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path>
               <path d="M14 3v5h5M9 13h6M9 17h4"></path>
             </svg>
-            <span>Chính sách & Hỏi đáp</span>
+            <span>Nhật ký hoạt động</span>
           </router-link>
         </nav>
       </div>

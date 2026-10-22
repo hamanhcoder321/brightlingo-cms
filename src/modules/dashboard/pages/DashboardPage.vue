@@ -288,6 +288,7 @@ const statusConfig: Record<string, { label: string; style: string }> = {
 };
 
 interface RecentOrderRow {
+  id?: string;
   code: string;
   name: string;
   email: string;
@@ -310,9 +311,9 @@ const recentOrders = computed(() => {
 });
 
 // Load dữ liệu đơn hàng và doanh thu thực tế từ backend
-async function loadRealStats() {
+async function loadRealStats(period?: string) {
   try {
-    const summary: any = await dashboardApi.getSummary();
+    const summary: any = await dashboardApi.getSummary(period || selectedPeriod.value);
     if (summary) {
       const totalRev = Number(summary.totalRevenue || summary.kpi?.totalRevenue || 0);
       const paid = Number(summary.paidOrders || summary.kpi?.paidOrders || 0);
@@ -347,6 +348,7 @@ async function loadRealStats() {
       const ordersList = summary.recentOrders || [];
       if (ordersList.length > 0) {
         rawOrders.value = ordersList.map((o: any) => ({
+          id: o.id || o.order_code,
           code: o.order_code,
           name: o.customer_name || "Học viên",
           email: o.customer_email || "—",
@@ -392,11 +394,11 @@ const modalOrderData = ref<Order | null>(null);
 
 function handleOpenResend(order: any) {
   modalOrderData.value = {
-    id: order.code,
+    id: order.id || order.code,
     order_code: order.code,
     customer_name: order.name,
     customer_email: order.email,
-    customer_phone: "0901234567",
+    customer_phone: "",
     course_id: "c-1",
     course_title: order.course,
     course_price: 399000,
@@ -415,17 +417,6 @@ function handleResendSuccess() {
 }
 
 function handlePeriodChange() {
-  if (selectedPeriod.value === "7days") {
-    currentMetrics.value.revenue = "4.380.000đ";
-    currentMetrics.value.paidOrders = 12;
-    currentMetrics.value.totalOrdersText = "trên 18 đơn được tạo";
-    currentMetrics.value.conversionRate = "67%";
-    currentMetrics.value.expiredOrdersText = "6 đơn hết hạn QR";
-  } else if (selectedPeriod.value === "month") {
-    currentMetrics.value.revenue = "18.748.000đ";
-    currentMetrics.value.paidOrders = 52;
-    currentMetrics.value.totalOrdersText = "trên 83 đơn được tạo";
-    currentMetrics.value.conversionRate = "63%";
-  }
+  loadRealStats(selectedPeriod.value);
 }
 </script>

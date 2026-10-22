@@ -1,13 +1,50 @@
 <template>
-  <div class="flex min-h-screen bg-[#F4F1EB] text-[#1D2A2E] font-sans antialiased">
-    <!-- Desktop Sidebar -->
-    <aside
-      class="w-64 shrink-0 bg-[#1D2A2E] text-[#D5DCDE] p-4 flex flex-col justify-between min-h-screen border-r border-[#2C3B40] select-none"
+  <div class="flex flex-col md:flex-row min-h-screen bg-[#F4F1EB] text-[#1D2A2E] font-sans antialiased">
+    <!-- Mobile Header Bar (Visible on mobile only < md) -->
+    <header
+      class="md:hidden sticky top-0 z-30 flex items-center justify-between h-14 px-4 bg-[#1D2A2E] text-white border-b border-[#2C3B40] shadow-xs select-none"
     >
-      <div class="flex flex-col gap-6">
-        <!-- Logo & Branding -->
-        <div class="flex items-center gap-2.5 px-2 pt-2">
-          <svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true" class="shrink-0">
+      <div class="flex items-center gap-2.5">
+        <button
+          @click="isMobileMenuOpen = !isMobileMenuOpen"
+          type="button"
+          class="p-2 -ml-1 rounded-lg text-[#D5DCDE] hover:text-white hover:bg-[#27373C] transition-colors focus:outline-none"
+          aria-label="Mở menu quản trị"
+        >
+          <svg
+            v-if="!isMobileMenuOpen"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg
+            v-else
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Brand Icon & Name Mobile -->
+        <router-link to="/dashboard" class="flex items-center gap-2 text-decoration-none">
+          <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true" class="shrink-0">
             <path
               d="M15 6h24a11 11 0 0 1 11 11v10a11 11 0 0 1-11 11H24l-9 8v-8.6A11 11 0 0 1 4 27V17A11 11 0 0 1 15 6z"
               fill="#FFFFFF"
@@ -19,10 +56,77 @@
               stroke-width="3"
             ></path>
           </svg>
-          <div class="flex flex-col leading-tight">
-            <span class="font-serif font-bold text-[21px] text-white tracking-tight">EngNest</span>
-            <span class="text-[13px] text-[#AEB8BB]">Quản trị</span>
+          <span class="font-serif font-bold text-[17px] text-white tracking-tight">EngNest CMS</span>
+        </router-link>
+      </div>
+
+      <!-- Right Action Mobile (Leads badge + Avatar) -->
+      <div class="flex items-center gap-2">
+        <router-link
+          v-if="newLeadsCount > 0"
+          to="/leads"
+          class="bg-[#E8873A] text-[#1D2A2E] text-[11px] font-bold px-2 py-0.5 rounded-full leading-none flex items-center gap-1 text-decoration-none"
+        >
+          <span>{{ newLeadsCount }}</span>
+          <span class="hidden xs:inline">tư vấn</span>
+        </router-link>
+        <div
+          class="w-7 h-7 rounded-full bg-[#0B6E6E] text-white text-[11px] font-bold flex items-center justify-center shrink-0"
+        >
+          AD
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Backdrop Overlay -->
+    <div
+      v-if="isMobileMenuOpen"
+      @click="isMobileMenuOpen = false"
+      class="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 md:hidden transition-opacity duration-300"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Sidebar (Desktop Fixed / Mobile Off-canvas Drawer) -->
+    <aside
+      :class="[
+        'fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[#1D2A2E] text-[#D5DCDE] p-4 flex flex-col justify-between min-h-screen border-r border-[#2C3B40] select-none transition-transform duration-300 ease-in-out md:static md:translate-x-0 md:z-auto md:w-64 md:shrink-0 overflow-y-auto',
+        isMobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
+      ]"
+    >
+      <div class="flex flex-col gap-5">
+        <!-- Logo & Branding & Close Button on Mobile -->
+        <div class="flex items-center justify-between px-2 pt-2">
+          <div class="flex items-center gap-2.5">
+            <svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true" class="shrink-0">
+              <path
+                d="M15 6h24a11 11 0 0 1 11 11v10a11 11 0 0 1-11 11H24l-9 8v-8.6A11 11 0 0 1 4 27V17A11 11 0 0 1 15 6z"
+                fill="#FFFFFF"
+              ></path>
+              <path
+                d="M37 28h13a9 9 0 0 1 9 9v6a9 9 0 0 1-6 8.5V58l-7.5-5.5H37a9 9 0 0 1-9-9v-6.5a9 9 0 0 1 9-9z"
+                fill="#E8873A"
+                stroke="#1D2A2E"
+                stroke-width="3"
+              ></path>
+            </svg>
+            <div class="flex flex-col leading-tight">
+              <span class="font-serif font-bold text-[21px] text-white tracking-tight">EngNest</span>
+              <span class="text-[13px] text-[#AEB8BB]">Quản trị</span>
+            </div>
           </div>
+
+          <!-- Close button for mobile drawer -->
+          <button
+            @click="isMobileMenuOpen = false"
+            type="button"
+            class="md:hidden p-1.5 rounded-lg text-[#AEB8BB] hover:text-white hover:bg-[#27373C] transition-colors"
+            aria-label="Đóng menu"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
         </div>
 
         <!-- Navigation Menu -->
@@ -30,6 +134,7 @@
           <!-- Tổng quan -->
           <router-link
             to="/dashboard"
+            @click="isMobileMenuOpen = false"
             :class="[
               'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
               isActive('/dashboard')
@@ -46,6 +151,7 @@
           <!-- Khóa học -->
           <router-link
             to="/courses"
+            @click="isMobileMenuOpen = false"
             :class="[
               'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
               isActive('/courses')
@@ -63,6 +169,7 @@
           <!-- Đơn hàng -->
           <router-link
             to="/orders"
+            @click="isMobileMenuOpen = false"
             :class="[
               'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
               isActive('/orders')
@@ -79,6 +186,7 @@
           <!-- Yêu cầu tư vấn -->
           <router-link
             to="/leads"
+            @click="isMobileMenuOpen = false"
             :class="[
               'flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
               isActive('/leads')
@@ -150,6 +258,7 @@
           <!-- Giao diện & Banner -->
           <router-link
             to="/settings"
+            @click="isMobileMenuOpen = false"
             :class="[
               'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
               isActive('/settings') || isActive('/banners')
@@ -167,6 +276,7 @@
           <!-- SEO & Google -->
           <router-link
             to="/seo"
+            @click="isMobileMenuOpen = false"
             :class="[
               'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
               isActive('/seo')
@@ -181,9 +291,10 @@
             <span>SEO & Google</span>
           </router-link>
 
-          <!-- Chính sách & Hỏi đáp / Audit -->
+          <!-- Nhật ký hoạt động -->
           <router-link
             to="/audit-logs"
+            @click="isMobileMenuOpen = false"
             :class="[
               'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
               isActive('/audit-logs')
@@ -215,7 +326,7 @@
           <button
             @click="handleLogout"
             title="Đăng xuất"
-            class="p-1.5 text-[#AEB8BB] hover:text-red-400 hover:bg-[#33403F] rounded transition-colors"
+            class="p-1.5 text-[#AEB8BB] hover:text-red-400 hover:bg-[#33403F] rounded transition-colors cursor-pointer"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -235,7 +346,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@modules/auth/store/auth.store";
 import { leadApi } from "@modules/leads/api/lead.api";
@@ -244,6 +355,7 @@ const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const newLeadsCount = ref(0);
+const isMobileMenuOpen = ref(false);
 
 const adminUser = computed(() => authStore.user || { name: "Quản trị viên", email: "admin@engnest.vn" });
 
@@ -258,12 +370,37 @@ async function fetchNewLeadsCount() {
 watch(
   () => route.path,
   () => {
+    isMobileMenuOpen.value = false;
     fetchNewLeadsCount();
   },
 );
 
+watch(isMobileMenuOpen, (isOpen) => {
+  if (typeof document !== "undefined") {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+  }
+});
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === "Escape" && isMobileMenuOpen.value) {
+    isMobileMenuOpen.value = false;
+  }
+};
+
 onMounted(() => {
   fetchNewLeadsCount();
+  if (typeof window !== "undefined") {
+    window.addEventListener("keydown", handleKeydown);
+  }
+});
+
+onUnmounted(() => {
+  if (typeof window !== "undefined") {
+    window.removeEventListener("keydown", handleKeydown);
+  }
+  if (typeof document !== "undefined") {
+    document.body.style.overflow = "";
+  }
 });
 
 function isActive(path: string): boolean {

@@ -1,9 +1,9 @@
 <template>
-  <div class="p-6 md:p-8 pb-14 flex flex-col gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
+  <div class="p-4 sm:p-6 md:p-8 pb-14 flex flex-col gap-4 sm:gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
     <!-- Header -->
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h1 class="m-0 font-serif font-bold text-[32px] text-[#1D2A2E] leading-tight">
+        <h1 class="m-0 font-serif font-bold text-2xl sm:text-[32px] text-[#1D2A2E] leading-tight">
           Quản lý Đơn hàng
         </h1>
         <p class="m-0 text-[#4C5A60] text-[15px] mt-0.5">
@@ -28,7 +28,7 @@
     <!-- Filter & Search Toolbar -->
     <div class="flex flex-wrap gap-3 items-center">
       <!-- Search Input -->
-      <label class="flex-1 min-w-[280px] relative flex items-center">
+      <label class="flex-1 min-w-0 w-full relative flex items-center">
         <span class="absolute left-3.5 flex text-[#4C5A60]" aria-hidden="true">
           <Search class="w-[18px] h-[18px]" />
         </span>
@@ -53,7 +53,7 @@
       <div
         role="group"
         aria-label="Lọc trạng thái"
-        class="flex gap-1.5 bg-white border border-[#E5E0D7] rounded-[12px] p-1 shadow-xs flex-wrap"
+        class="flex gap-1.5 bg-white border border-[#E5E0D7] rounded-[12px] p-1 shadow-xs overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none shrink-0"
       >
         <button
           type="button"

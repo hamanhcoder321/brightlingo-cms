@@ -1,9 +1,9 @@
 <template>
-  <div class="p-6 md:p-8 pb-14 flex flex-col gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
+  <div class="p-4 sm:p-6 md:p-8 pb-14 flex flex-col gap-4 sm:gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
     <!-- Header -->
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h1 class="m-0 font-serif font-bold text-[32px] text-[#1D2A2E] leading-tight">
+        <h1 class="m-0 font-serif font-bold text-2xl sm:text-[32px] text-[#1D2A2E] leading-tight">
           Danh mục Khóa học
         </h1>
         <p class="m-0 text-[#4C5A60] text-[15px] mt-0.5">
@@ -15,7 +15,7 @@
         <button
           type="button"
           @click="showAddModal = true"
-          class="h-[46px] px-5 rounded-[10px] bg-[#0B6E6E] hover:bg-[#08585A] text-white font-semibold text-[15px] inline-flex items-center gap-2 shadow-xs transition-colors cursor-pointer"
+          class="h-[44px] sm:h-[46px] px-4 sm:px-5 rounded-[10px] bg-[#0B6E6E] hover:bg-[#08585A] text-white font-semibold text-[15px] inline-flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer w-full sm:w-auto"
         >
           <span>+ Thêm danh mục mới</span>
         </button>

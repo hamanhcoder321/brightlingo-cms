@@ -43,7 +43,7 @@ function goToPage(page: number) {
 </script>
 
 <template>
-  <div class="grid grid-cols-3 items-center gap-4 px-2">
+  <div class="flex flex-col sm:grid sm:grid-cols-3 items-center gap-3 sm:gap-4 px-2">
     <!-- Left column: Limit selector -->
     <div class="flex items-center gap-2">
       <Select :model-value="pageSize" @update:model-value="handleLimitChange">

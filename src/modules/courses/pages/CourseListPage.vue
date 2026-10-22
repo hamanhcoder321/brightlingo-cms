@@ -1,9 +1,9 @@
 <template>
-  <div class="p-6 md:p-8 pb-14 flex flex-col gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
+  <div class="p-4 sm:p-6 md:p-8 pb-14 flex flex-col gap-4 sm:gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
     <!-- Page Header -->
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h1 class="m-0 font-serif font-bold text-[32px] text-[#1D2A2E] leading-tight">
+        <h1 class="m-0 font-serif font-bold text-2xl sm:text-[32px] text-[#1D2A2E] leading-tight">
           Khóa học
         </h1>
         <p class="m-0 text-[#4C5A60] text-[15px] mt-0.5">
@@ -13,7 +13,7 @@
 
       <router-link
         to="/courses/create"
-        class="h-[46px] px-5 rounded-[10px] bg-[#0B6E6E] hover:bg-[#08585A] text-white font-semibold text-[16px] inline-flex items-center gap-2 text-decoration-none shadow-sm transition-colors"
+        class="h-[44px] sm:h-[46px] px-4 sm:px-5 rounded-[10px] bg-[#0B6E6E] hover:bg-[#08585A] text-white font-semibold text-[15px] sm:text-[16px] inline-flex items-center justify-center gap-2 text-decoration-none shadow-sm transition-colors w-full sm:w-auto"
       >
         <svg
           width="18"
@@ -34,7 +34,7 @@
     <!-- Filter & Search Toolbar -->
     <div class="flex flex-wrap gap-3 items-center">
       <!-- Search Input -->
-      <label class="flex-1 min-w-[280px] relative flex items-center">
+      <label class="flex-1 min-w-0 w-full relative flex items-center">
         <span class="absolute left-3.5 flex text-[#4C5A60]" aria-hidden="true">
           <svg
             width="18"
@@ -71,13 +71,13 @@
       <div
         role="group"
         aria-label="Lọc trạng thái"
-        class="flex gap-1.5 bg-white border border-[#E5E0D7] rounded-[12px] p-1 shadow-sm"
+        class="flex gap-1.5 bg-white border border-[#E5E0D7] rounded-[12px] p-1 shadow-sm overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none shrink-0"
       >
         <button
           type="button"
           @click="statusFilter = 'ALL'"
           :class="[
-            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[15px] cursor-pointer transition-colors',
+            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[15px] cursor-pointer transition-colors whitespace-nowrap',
             statusFilter === 'ALL'
               ? 'bg-[#E6F2F0] text-[#08585A]'
               : 'bg-transparent text-[#4C5A60] hover:text-[#1D2A2E]'
@@ -90,7 +90,7 @@
           type="button"
           @click="statusFilter = 'PUBLISHED'"
           :class="[
-            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[15px] cursor-pointer transition-colors',
+            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[15px] cursor-pointer transition-colors whitespace-nowrap',
             statusFilter === 'PUBLISHED'
               ? 'bg-[#E6F2F0] text-[#08585A]'
               : 'bg-transparent text-[#4C5A60] hover:text-[#1D2A2E]'
@@ -103,7 +103,7 @@
           type="button"
           @click="statusFilter = 'DRAFT'"
           :class="[
-            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[15px] cursor-pointer transition-colors',
+            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[15px] cursor-pointer transition-colors whitespace-nowrap',
             statusFilter === 'DRAFT'
               ? 'bg-[#E6F2F0] text-[#08585A]'
               : 'bg-transparent text-[#4C5A60] hover:text-[#1D2A2E]'

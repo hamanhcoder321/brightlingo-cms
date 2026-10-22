@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 md:p-8 pb-16 flex flex-col gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
+  <div class="p-4 sm:p-6 md:p-8 pb-16 flex flex-col gap-4 sm:gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
     <!-- Breadcrumb & Title -->
     <div class="flex flex-col gap-1">
       <nav aria-label="Đường dẫn" class="text-sm text-[#4C5A60] flex items-center gap-1.5">
@@ -9,7 +9,7 @@
         <span>/</span>
         <span class="font-medium text-[#1D2A2E]">{{ isEdit ? 'Sửa' : 'Thêm mới' }}</span>
       </nav>
-      <h1 class="m-0 font-serif font-bold text-[30px] text-[#1D2A2E] leading-tight">
+      <h1 class="m-0 font-serif font-bold text-2xl sm:text-[30px] text-[#1D2A2E] leading-tight">
         {{ form.title || (isEdit ? 'Chỉnh sửa khóa học' : 'Thêm khóa học mới') }}
       </h1>
     </div>
@@ -25,7 +25,7 @@
       <!-- Left Column: Form Sections -->
       <form @submit.prevent="handleSave" class="flex-[999_1_560px] min-w-0 flex flex-col gap-5">
         <!-- 1. Thông tin cơ bản -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">1. Thông tin cơ bản</h2>
 
           <label class="flex flex-col gap-1.5 font-medium text-[15px]">
@@ -109,7 +109,7 @@
         </section>
 
         <!-- 2. Giá bán -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">2. Giá bán</h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
@@ -159,7 +159,7 @@
         </section>
 
         <!-- 3. Hình ảnh & video -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">3. Hình ảnh & video</h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -283,7 +283,7 @@
         </section>
 
         <!-- 4. Nội dung trang chi tiết -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-5 shadow-sm">
           <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">4. Nội dung trang chi tiết</h2>
 
           <!-- Lợi ích -->
@@ -442,7 +442,7 @@
         </section>
 
         <!-- 5. Bàn giao tự động sau khi thanh toán -->
-        <section class="bg-white border-2 border-[#9FC9C2] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border-2 border-[#9FC9C2] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <div>
             <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">5. Bàn giao tự động sau khi thanh toán</h2>
             <p class="m-0 text-[14px] text-[#4C5A60] mt-0.5">
@@ -506,7 +506,7 @@
         </section>
 
         <!-- 6. SEO cho Google & chia sẻ mạng xã hội -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <div>
             <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">6. SEO cho Google & chia sẻ mạng xã hội</h2>
             <p class="m-0 text-[14px] text-[#4C5A60] mt-0.5">
@@ -642,7 +642,7 @@
       </form>
 
       <!-- Right Column: Sticky Sidebar Actions & Live Preview -->
-      <div class="flex-[1_1_320px] min-w-0 flex flex-col gap-4 sticky top-6">
+      <div class="flex-[1_1_320px] w-full lg:w-auto min-w-0 flex flex-col gap-4 lg:sticky lg:top-6">
         <!-- Publish Action Card -->
         <section class="bg-white border border-[#E5E0D7] rounded-2xl p-5 flex flex-col gap-3.5 shadow-sm">
           <h2 class="m-0 text-[17px] font-semibold text-[#1D2A2E]">Xuất bản</h2>

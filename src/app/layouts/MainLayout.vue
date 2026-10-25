@@ -205,22 +205,23 @@
             </span>
           </router-link>
 
-          <!-- Mã giảm giá (Vô hiệu hóa - Giai đoạn 2) -->
-          <div
-            title="Tính năng phát triển ở Giai đoạn 2"
-            class="flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] text-[#AEB8BB] opacity-60 cursor-not-allowed select-none"
+          <!-- Mã giảm giá -->
+          <router-link
+            to="/coupons"
+            @click="isMobileMenuOpen = false"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/coupons')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
           >
-            <span class="flex items-center gap-3">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-                <path d="M3 12V4h8l10 10-8 8z"></path>
-                <circle cx="7.5" cy="8.5" r="1.5"></circle>
-              </svg>
-              <span>Mã giảm giá</span>
-            </span>
-            <span class="bg-[#33403F] text-[#D5DCDE] text-[12px] font-bold px-1.5 py-0.5 rounded leading-none">
-              GĐ 2
-            </span>
-          </div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <path d="M3 12V4h8l10 10-8 8z"></path>
+              <circle cx="7.5" cy="8.5" r="1.5"></circle>
+            </svg>
+            <span>Mã giảm giá</span>
+          </router-link>
 
           <!-- Bài viết (Vô hiệu hóa - Giai đoạn 2) -->
           <div

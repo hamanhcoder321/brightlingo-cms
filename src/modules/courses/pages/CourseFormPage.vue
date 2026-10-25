@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 md:p-8 pb-16 flex flex-col gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
+  <div class="p-4 sm:p-6 md:p-8 pb-16 flex flex-col gap-4 sm:gap-5 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
     <!-- Breadcrumb & Title -->
     <div class="flex flex-col gap-1">
       <nav aria-label="Đường dẫn" class="text-sm text-[#4C5A60] flex items-center gap-1.5">
@@ -9,7 +9,7 @@
         <span>/</span>
         <span class="font-medium text-[#1D2A2E]">{{ isEdit ? 'Sửa' : 'Thêm mới' }}</span>
       </nav>
-      <h1 class="m-0 font-serif font-bold text-[30px] text-[#1D2A2E] leading-tight">
+      <h1 class="m-0 font-serif font-bold text-2xl sm:text-[30px] text-[#1D2A2E] leading-tight">
         {{ form.title || (isEdit ? 'Chỉnh sửa khóa học' : 'Thêm khóa học mới') }}
       </h1>
     </div>
@@ -25,7 +25,7 @@
       <!-- Left Column: Form Sections -->
       <form @submit.prevent="handleSave" class="flex-[999_1_560px] min-w-0 flex flex-col gap-5">
         <!-- 1. Thông tin cơ bản -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">1. Thông tin cơ bản</h2>
 
           <label class="flex flex-col gap-1.5 font-medium text-[15px]">
@@ -109,7 +109,7 @@
         </section>
 
         <!-- 2. Giá bán -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">2. Giá bán</h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
@@ -143,22 +143,23 @@
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-3 border-[1.5px] border-dashed border-[#D8D2C7] rounded-xl p-3 bg-[#FAF7F2] opacity-90">
-            <label class="flex gap-2.5 items-center text-[15px] cursor-pointer">
+          <div class="flex flex-wrap items-center gap-3 border-[1.5px] border-dashed border-[#D8D2C7] rounded-xl p-3 bg-[#FAF7F2] opacity-60 cursor-not-allowed select-none">
+            <label class="flex gap-2.5 items-center text-[15px] cursor-not-allowed pointer-events-none">
               <input
                 v-model="allowCoupon"
                 type="checkbox"
-                class="w-5 h-5 accent-[#0B6E6E] cursor-pointer"
+                disabled
+                class="w-5 h-5 accent-[#0B6E6E] cursor-not-allowed"
               />
               <span>Cho phép áp dụng mã giảm giá cho khóa này</span>
             </label>
             <span class="bg-[#ECE7DE] text-[#4C5A60] text-[12px] font-bold px-2 py-0.5 rounded">GĐ 2</span>
-            <span class="text-[13px] text-[#4C5A60]">Tạo mã ở menu “Mã giảm giá”: % hoặc số tiền, số lượt, hạn dùng.</span>
+            <span class="text-[13px] text-[#4C5A60]">Tính năng Mã giảm giá sẽ phát triển ở Giai đoạn 2.</span>
           </div>
         </section>
 
         <!-- 3. Hình ảnh & video -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">3. Hình ảnh & video</h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -282,7 +283,7 @@
         </section>
 
         <!-- 4. Nội dung trang chi tiết -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-5 shadow-sm">
           <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">4. Nội dung trang chi tiết</h2>
 
           <!-- Lợi ích -->
@@ -441,7 +442,7 @@
         </section>
 
         <!-- 5. Bàn giao tự động sau khi thanh toán -->
-        <section class="bg-white border-2 border-[#9FC9C2] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border-2 border-[#9FC9C2] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <div>
             <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">5. Bàn giao tự động sau khi thanh toán</h2>
             <p class="m-0 text-[14px] text-[#4C5A60] mt-0.5">
@@ -505,7 +506,7 @@
         </section>
 
         <!-- 6. SEO cho Google & chia sẻ mạng xã hội -->
-        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <section class="bg-white border border-[#E5E0D7] rounded-2xl p-4 sm:p-6 flex flex-col gap-4 shadow-sm">
           <div>
             <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">6. SEO cho Google & chia sẻ mạng xã hội</h2>
             <p class="m-0 text-[14px] text-[#4C5A60] mt-0.5">
@@ -641,7 +642,7 @@
       </form>
 
       <!-- Right Column: Sticky Sidebar Actions & Live Preview -->
-      <div class="flex-[1_1_320px] min-w-0 flex flex-col gap-4 sticky top-6">
+      <div class="flex-[1_1_320px] w-full lg:w-auto min-w-0 flex flex-col gap-4 lg:sticky lg:top-6">
         <!-- Publish Action Card -->
         <section class="bg-white border border-[#E5E0D7] rounded-2xl p-5 flex flex-col gap-3.5 shadow-sm">
           <h2 class="m-0 text-[17px] font-semibold text-[#1D2A2E]">Xuất bản</h2>
@@ -843,7 +844,7 @@ const isDeleting = ref(false);
 const showDeleteModal = ref(false);
 
 const categories = ref<CourseCategory[]>([]);
-const allowCoupon = ref(true);
+const allowCoupon = ref(false);
 const mainKeyword = ref("mẹ dạy con tiếng anh");
 const imageAlt = ref("Mẹ đọc truyện tiếng Anh cho con");
 const lastSavedText = ref("Chưa lưu thay đổi");
@@ -1169,8 +1170,24 @@ async function handleSave() {
     showToast("Vui lòng nhập tên khóa học.");
     return;
   }
-  if (!form.slug.trim()) {
+  const cleanSlug = form.slug.trim().toLowerCase();
+  if (!cleanSlug) {
     showToast("Vui lòng nhập đường dẫn slug.");
+    return;
+  }
+  const RESERVED_COURSE_SLUGS = new Set([
+    "admin", "api", "checkout", "payment", "payments", "policies", "policy",
+    "chinh-sach", "khoa-hoc", "courses", "orders", "leads", "coupons", "auth",
+    "login", "register", "dang-ky", "dashboard", "settings", "danh-gia", "loi-ich",
+    "giao-tai-lieu-so", "chinh-sach-thanh-toan", "chinh-sach-bao-mat", "dieu-khoan-su-dung",
+    "uploads", "sitemap", "robots", "categories"
+  ]);
+  if (RESERVED_COURSE_SLUGS.has(cleanSlug)) {
+    showToast(`Đường dẫn "${cleanSlug}" trùng với route hệ thống được bảo lưu. Vui lòng chọn slug khác.`);
+    return;
+  }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(cleanSlug)) {
+    showToast("Đường dẫn (slug) chỉ được chứa chữ thường không dấu, số và dấu gạch nối.");
     return;
   }
   if (!form.resourceLink.trim()) {

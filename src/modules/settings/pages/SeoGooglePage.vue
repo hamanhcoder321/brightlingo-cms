@@ -1,12 +1,12 @@
 <template>
   <div
-    class="p-6 md:p-8 pb-14 flex flex-col gap-[22px] max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]"
+    class="p-4 sm:p-6 md:p-8 pb-14 flex flex-col gap-4 sm:gap-[22px] max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]"
     style="color-scheme: light"
   >
     <!-- Top Header -->
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div class="flex flex-col gap-1">
-        <h1 class="m-0 font-serif font-bold text-[32px] text-[#1D2A2E] leading-tight">
+        <h1 class="m-0 font-serif font-bold text-2xl sm:text-[32px] text-[#1D2A2E] leading-tight">
           SEO &amp; Google
         </h1>
         <p class="m-0 text-[#4C5A60] text-[15px]">
@@ -536,7 +536,7 @@
       </div>
 
       <!-- Right Sticky Sidebar: SEO Diagnostics -->
-      <aside class="flex-[1_1_320px] min-w-0 sticky top-6 flex flex-col gap-4">
+      <aside class="flex-[1_1_320px] w-full lg:w-auto min-w-0 lg:sticky lg:top-6 flex flex-col gap-4">
         <section class="bg-white border border-[#E5E0D7] rounded-[16px] p-5 flex flex-col gap-3 shadow-xs">
           <h2 class="m-0 text-[17px] font-semibold text-[#1D2A2E]">Tình trạng SEO</h2>
 

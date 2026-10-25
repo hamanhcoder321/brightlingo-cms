@@ -1,23 +1,23 @@
 <template>
-  <div class="p-6 md:p-8 pb-14 flex flex-col gap-6 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
+  <div class="p-4 sm:p-6 md:p-8 pb-14 flex flex-col gap-5 sm:gap-6 max-w-[1440px] mx-auto min-h-full font-sans text-[#1D2A2E]">
     <!-- Top Bar: Title, Badge, Filter, Add Course Button -->
-    <div class="flex flex-wrap items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div class="flex items-center gap-3 flex-wrap">
-        <h1 class="m-0 font-serif font-bold text-[32px] text-[#1D2A2E] leading-tight">
+        <h1 class="m-0 font-serif font-bold text-2xl sm:text-[32px] text-[#1D2A2E] leading-tight">
           Tổng quan bán hàng
         </h1>
-        <span class="bg-[#E4F3EA] text-[#155C35] text-[13px] font-semibold px-2.5 py-0.5 rounded-full">
+        <span class="bg-[#E4F3EA] text-[#155C35] text-[12px] sm:text-[13px] font-semibold px-2.5 py-0.5 rounded-full">
           Dữ liệu thời gian thực
         </span>
       </div>
 
-      <div class="flex flex-wrap items-center gap-3">
-        <label class="flex items-center gap-2 text-[15px] text-[#4C5A60]">
-          <span>Khoảng thời gian</span>
+      <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+        <label class="flex items-center gap-2 text-[14px] sm:text-[15px] text-[#4C5A60] flex-1 sm:flex-none">
+          <span class="hidden xs:inline">Thời gian:</span>
           <select
             v-model="selectedPeriod"
             @change="handlePeriodChange"
-            class="h-11 border-[1.5px] border-[#D8D2C7] rounded-[10px] px-3 font-inherit text-[15px] bg-white text-[#1D2A2E] focus:outline-none focus:border-[#0B6E6E]"
+            class="h-10 sm:h-11 border-[1.5px] border-[#D8D2C7] rounded-[10px] px-3 font-inherit text-[14px] sm:text-[15px] bg-white text-[#1D2A2E] focus:outline-none focus:border-[#0B6E6E] w-full sm:w-auto"
           >
             <option value="30days">30 ngày qua</option>
             <option value="7days">7 ngày qua</option>
@@ -28,7 +28,7 @@
 
         <router-link
           to="/courses/create"
-          class="h-11 px-4 rounded-[10px] bg-[#0B6E6E] hover:bg-[#08585A] text-white font-semibold text-[15px] flex items-center gap-2 transition-colors shadow-sm"
+          class="h-10 sm:h-11 px-4 rounded-[10px] bg-[#0B6E6E] hover:bg-[#08585A] text-white font-semibold text-[14px] sm:text-[15px] flex items-center justify-center gap-2 transition-colors shadow-sm flex-1 sm:flex-none text-decoration-none"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
             <path d="M12 5v14M5 12h14"></path>
@@ -78,39 +78,43 @@
         <span class="text-[14px] text-[#4C5A60]">triệu đồng / ngày</span>
       </div>
 
-      <!-- Bars Container -->
-      <div
-        role="img"
-        aria-label="Biểu đồ cột doanh thu theo ngày"
-        class="grid grid-cols-14 gap-2.5 items-end h-[180px] border-b border-[#E5E0D7] pb-0"
-        style="grid-template-columns: repeat(14, minmax(0, 1fr));"
-      >
-        <div
-          v-for="(b, idx) in bars"
-          :key="idx"
-          class="flex flex-col items-center gap-1 justify-end h-full group"
-        >
-          <span class="text-[12px] text-[#4C5A60] font-mono group-hover:font-bold group-hover:text-[#0B6E6E] transition-all">
-            {{ b.v }}
-          </span>
+      <!-- Bars Container (Scrollable on mobile) -->
+      <div class="overflow-x-auto pb-2 -mx-2 px-2">
+        <div class="min-w-[560px] flex flex-col gap-2">
           <div
-            class="w-full max-w-[36px] rounded-t-[6px] transition-all duration-300 group-hover:opacity-90"
-            :style="{
-              height: `${b.height}px`,
-              backgroundColor: b.isToday ? '#0B6E6E' : '#8CC3BB'
-            }"
-          ></div>
-        </div>
-      </div>
+            role="img"
+            aria-label="Biểu đồ cột doanh thu theo ngày"
+            class="grid grid-cols-14 gap-2.5 items-end h-[180px] border-b border-[#E5E0D7] pb-0"
+            style="grid-template-columns: repeat(14, minmax(0, 1fr));"
+          >
+            <div
+              v-for="(b, idx) in bars"
+              :key="idx"
+              class="flex flex-col items-center gap-1 justify-end h-full group"
+            >
+              <span class="text-[12px] text-[#4C5A60] font-mono group-hover:font-bold group-hover:text-[#0B6E6E] transition-all">
+                {{ b.v }}
+              </span>
+              <div
+                class="w-full max-w-[36px] rounded-t-[6px] transition-all duration-300 group-hover:opacity-90"
+                :style="{
+                  height: `${b.height}px`,
+                  backgroundColor: b.isToday ? '#0B6E6E' : '#8CC3BB'
+                }"
+              ></div>
+            </div>
+          </div>
 
-      <!-- Dates labels below bars -->
-      <div
-        class="grid gap-2.5 text-[12px] text-[#4C5A60] text-center font-mono"
-        style="grid-template-columns: repeat(14, minmax(0, 1fr));"
-      >
-        <span v-for="(b, idx) in bars" :key="'label-' + idx" :class="{ 'font-bold text-[#0B6E6E]': b.isToday }">
-          {{ b.d }}
-        </span>
+          <!-- Dates labels below bars -->
+          <div
+            class="grid gap-2.5 text-[12px] text-[#4C5A60] text-center font-mono"
+            style="grid-template-columns: repeat(14, minmax(0, 1fr));"
+          >
+            <span v-for="(b, idx) in bars" :key="'label-' + idx" :class="{ 'font-bold text-[#0B6E6E]': b.isToday }">
+              {{ b.d }}
+            </span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -288,6 +292,7 @@ const statusConfig: Record<string, { label: string; style: string }> = {
 };
 
 interface RecentOrderRow {
+  id?: string;
   code: string;
   name: string;
   email: string;
@@ -310,9 +315,9 @@ const recentOrders = computed(() => {
 });
 
 // Load dữ liệu đơn hàng và doanh thu thực tế từ backend
-async function loadRealStats() {
+async function loadRealStats(period?: string) {
   try {
-    const summary: any = await dashboardApi.getSummary();
+    const summary: any = await dashboardApi.getSummary(period || selectedPeriod.value);
     if (summary) {
       const totalRev = Number(summary.totalRevenue || summary.kpi?.totalRevenue || 0);
       const paid = Number(summary.paidOrders || summary.kpi?.paidOrders || 0);
@@ -347,6 +352,7 @@ async function loadRealStats() {
       const ordersList = summary.recentOrders || [];
       if (ordersList.length > 0) {
         rawOrders.value = ordersList.map((o: any) => ({
+          id: o.id || o.order_code,
           code: o.order_code,
           name: o.customer_name || "Học viên",
           email: o.customer_email || "—",
@@ -392,11 +398,11 @@ const modalOrderData = ref<Order | null>(null);
 
 function handleOpenResend(order: any) {
   modalOrderData.value = {
-    id: order.code,
+    id: order.id || order.code,
     order_code: order.code,
     customer_name: order.name,
     customer_email: order.email,
-    customer_phone: "0901234567",
+    customer_phone: "",
     course_id: "c-1",
     course_title: order.course,
     course_price: 399000,
@@ -415,17 +421,6 @@ function handleResendSuccess() {
 }
 
 function handlePeriodChange() {
-  if (selectedPeriod.value === "7days") {
-    currentMetrics.value.revenue = "4.380.000đ";
-    currentMetrics.value.paidOrders = 12;
-    currentMetrics.value.totalOrdersText = "trên 18 đơn được tạo";
-    currentMetrics.value.conversionRate = "67%";
-    currentMetrics.value.expiredOrdersText = "6 đơn hết hạn QR";
-  } else if (selectedPeriod.value === "month") {
-    currentMetrics.value.revenue = "18.748.000đ";
-    currentMetrics.value.paidOrders = 52;
-    currentMetrics.value.totalOrdersText = "trên 83 đơn được tạo";
-    currentMetrics.value.conversionRate = "63%";
-  }
+  loadRealStats(selectedPeriod.value);
 }
 </script>

@@ -8,7 +8,6 @@ import { courseRoutes } from "@modules/courses";
 import { orderRoutes } from "@modules/orders";
 import { couponRoutes } from "@modules/coupons";
 import { leadRoutes } from "@modules/leads";
-import { emailTemplateRoutes } from "@modules/email-templates";
 import { settingsRoutes } from "@modules/settings";
 import { auditLogRoutes } from "@modules/audit-logs";
 
@@ -23,7 +22,10 @@ const routes: RouteRecordRaw[] = [
   ...orderRoutes,
   ...couponRoutes,
   ...leadRoutes,
-  ...emailTemplateRoutes,
+  {
+    path: "/email-templates/:pathMatch(.*)*",
+    redirect: "/dashboard",
+  },
   ...settingsRoutes,
   ...auditLogRoutes,
   {

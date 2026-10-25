@@ -2,9 +2,11 @@ import { apiService } from "@shared/services";
 import type { DashboardStats } from "../types/dashboard.types";
 
 export const dashboardApi = {
-  getSummary: async (): Promise<DashboardStats> => {
+  getSummary: async (period?: string): Promise<DashboardStats> => {
     try {
-      const res = await apiService.get("/admin/dashboard");
+      const res = await apiService.get("/admin/dashboard", {
+        params: period ? { period } : undefined,
+      });
       return res.data;
     } catch {
       // Fallback mock stats for initial rendering

@@ -6,6 +6,7 @@ import { authRoutes } from "@modules/auth";
 import { dashboardRoutes } from "@modules/dashboard";
 import { courseRoutes } from "@modules/courses";
 import { orderRoutes } from "@modules/orders";
+import { couponRoutes } from "@modules/coupons";
 import { leadRoutes } from "@modules/leads";
 import { settingsRoutes } from "@modules/settings";
 import { auditLogRoutes } from "@modules/audit-logs";
@@ -19,10 +20,7 @@ const routes: RouteRecordRaw[] = [
   ...dashboardRoutes,
   ...courseRoutes,
   ...orderRoutes,
-  {
-    path: "/coupons",
-    redirect: "/dashboard",
-  },
+  ...couponRoutes,
   ...leadRoutes,
   {
     path: "/email-templates/:pathMatch(.*)*",

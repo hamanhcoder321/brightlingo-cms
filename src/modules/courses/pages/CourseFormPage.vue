@@ -610,7 +610,7 @@
               <input
                 type="text"
                 readonly
-                :value="'https://engnest.vn/khoa-hoc/' + form.slug"
+                :value="previewUrl"
                 class="h-12 border-[1.5px] border-[#E5E0D7] rounded-xl px-3.5 text-[14px] bg-[#FAF7F2] text-[#4C5A60] outline-none"
               />
               <span class="text-[13px] font-normal text-[#4C5A60]">Tự động theo slug – tránh trùng lặp nội dung.</span>
@@ -830,6 +830,7 @@
 import { ref, reactive, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { courseApi } from "../api/course.api";
+import { getFrontendPageUrl } from "@/shared/utils";
 import type { CourseCategory, CourseBenefit, CourseSection } from "../types/course.types";
 
 const route = useRoute();
@@ -1023,8 +1024,7 @@ const savingsAmount = computed(() => {
 });
 
 const previewUrl = computed(() => {
-  const feUrl = import.meta.env.VITE_FRONTEND_URL || "http://localhost:3000";
-  return `${feUrl}/khoa-hoc/${form.slug || ""}`;
+  return getFrontendPageUrl(`/khoa-hoc/${form.slug || ""}`);
 });
 
 function formatVND(val: number): string {

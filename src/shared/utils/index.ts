@@ -52,3 +52,23 @@ export function getErrorMessage(
     defaultMessage
   );
 }
+
+const DEV_FRONTEND_URL = "http://localhost:3000";
+
+/**
+ * URL website khách hàng (VITE_FRONTEND_URL), dùng cho nút "Xem trang", preview và copy link.
+ * Chỉ dùng localhost khi chạy dev; bản build production thiếu biến sẽ cảnh báo trong console.
+ */
+export function getFrontendUrl(): string {
+  const raw = (import.meta.env.VITE_FRONTEND_URL || "").trim().replace(/\/+$/, "");
+  if (raw) return /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  if (import.meta.env.PROD) {
+    console.error("[cms] Thiếu VITE_FRONTEND_URL; link xem trang đang trỏ localhost.");
+  }
+  return DEV_FRONTEND_URL;
+}
+
+export function getFrontendPageUrl(path = "/"): string {
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  return `${getFrontendUrl()}${cleanPath}`;
+}

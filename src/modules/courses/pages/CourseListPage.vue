@@ -448,6 +448,7 @@
 import { ref, computed, onMounted } from "vue";
 import { courseApi } from "../api/course.api";
 import type { Course } from "../types/course.types";
+import { getFrontendPageUrl } from "@/shared/utils";
 
 const courses = ref<Course[]>([]);
 const isLoading = ref(true);
@@ -546,13 +547,12 @@ function formatVND(val: number | undefined | null): string {
 
 // Public URL for Course page
 function getCoursePublicUrl(slug: string): string {
-  const feUrl = import.meta.env.VITE_FRONTEND_URL || "http://localhost:3000";
-  return `${feUrl}/khoa-hoc/${slug}`;
+  return getFrontendPageUrl(`/khoa-hoc/${slug}`);
 }
 
 // Clipboard copy
 async function copyLink(course: Course) {
-  const publicUrl = `https://engnest.vn/khoa-hoc/${course.slug}`;
+  const publicUrl = getCoursePublicUrl(course.slug);
   try {
     if (navigator?.clipboard?.writeText) {
       await navigator.clipboard.writeText(publicUrl);
@@ -567,7 +567,7 @@ async function copyLink(course: Course) {
       document.execCommand("copy");
       document.body.removeChild(textarea);
     }
-    showToast(`Đã chép link: engnest.vn/khoa-hoc/${course.slug}`);
+    showToast(`Đã chép link: ${publicUrl}`);
   } catch (err) {
     console.error("Clipboard error:", err);
     showToast(`Không thể tự động sao chép. URL: ${publicUrl}`);

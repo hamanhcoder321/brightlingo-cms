@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { settingsApi, DEFAULT_SYSTEM_SETTINGS } from "../api/settings.api";
+import { getFrontendPageUrl } from "@/shared/utils";
 import type {
   SystemSettings,
   HomepageSectionConfig,
@@ -268,11 +269,7 @@ const onFileChange = async (
 };
 
 const openHomepagePreview = () => {
-  const domain = form.value.primary_domain || "http://localhost:3000";
-  const targetUrl = domain.includes("localhost")
-    ? domain
-    : "http://localhost:3000";
-  window.open(targetUrl, "_blank", "noopener,noreferrer");
+  window.open(getFrontendPageUrl("/"), "_blank", "noopener,noreferrer");
 };
 
 const loadSettings = async () => {

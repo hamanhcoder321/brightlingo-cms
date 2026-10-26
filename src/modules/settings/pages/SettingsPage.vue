@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { settingsApi, DEFAULT_SYSTEM_SETTINGS } from "../api/settings.api";
+import { getFrontendPageUrl } from "@/shared/utils";
 import type {
   SystemSettings,
   HomepageSectionConfig,
@@ -268,11 +269,7 @@ const onFileChange = async (
 };
 
 const openHomepagePreview = () => {
-  const domain = form.value.primary_domain || "http://localhost:3000";
-  const targetUrl = domain.includes("localhost")
-    ? domain
-    : "http://localhost:3000";
-  window.open(targetUrl, "_blank", "noopener,noreferrer");
+  window.open(getFrontendPageUrl("/"), "_blank", "noopener,noreferrer");
 };
 
 const loadSettings = async () => {
@@ -998,7 +995,7 @@ onMounted(() => {
             <input
               v-model="form.support_email"
               type="email"
-              placeholder="hotro@engnest.vn"
+              placeholder="support@engnest.vn"
               class="w-full px-3 py-2 rounded-[9px] border border-[#D8D2C7] bg-white text-[13px] text-[#1D2A2E] focus:outline-none focus:border-[#0B6E6E]"
             />
           </div>

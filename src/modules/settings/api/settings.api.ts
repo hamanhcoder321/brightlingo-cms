@@ -197,7 +197,7 @@ export const DEFAULT_REDIRECTS_301: Redirect301Item[] = [
 export const DEFAULT_SYSTEM_SETTINGS: SystemSettings = {
   site_name: "EngNest",
   hotline: "0989 898 989",
-  support_email: "hotro@engnest.vn",
+  support_email: "support@engnest.vn",
   working_hours: "8:00–21:00 hằng ngày",
   vietqr_bank_code: "MBBANK",
   vietqr_account_number: "0399046519",

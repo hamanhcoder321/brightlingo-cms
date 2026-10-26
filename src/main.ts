@@ -23,5 +23,5 @@ async function bootstrap() {
 }
 
 bootstrap().catch((error) => {
-  console.error("Failed to bootstrap BrightLingo CMS:", error);
+  console.error("Failed to bootstrap EngNest CMS:", error);
 });

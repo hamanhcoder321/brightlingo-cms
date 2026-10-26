@@ -49,9 +49,9 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
   // Set document title
   if (to.meta?.title) {
-    document.title = `${to.meta.title} - BrightLingo CMS`;
+    document.title = `${to.meta.title} - EngNest CMS`;
   } else {
-    document.title = "BrightLingo CMS - Hệ thống Quản trị";
+    document.title = "EngNest CMS - Hệ thống Quản trị";
   }
 
   const token = getCookie(STORAGE_KEYS.ACCESS_TOKEN) || localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);

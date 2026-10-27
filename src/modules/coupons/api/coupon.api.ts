@@ -1,56 +1,59 @@
 import { apiService } from "@shared/services";
-import type { Coupon, CreateCouponDto } from "../types/coupon.types";
+import type { Coupon, CreateCouponDto, UpdateCouponDto } from "../types/coupon.types";
 
 export const couponApi = {
-  getCoupons: async (params?: any): Promise<{ items: Coupon[]; total: number }> => {
+  getCoupons: async (
+    filterParams?: any
+  ): Promise<{ items: Coupon[]; total: number; totalPages?: number }> => {
+    const apiResponse = await apiService.get("/admin/coupons", { params: filterParams });
+    return {
+      items: apiResponse.data?.items || (Array.isArray(apiResponse.data) ? apiResponse.data : []),
+      total:
+        apiResponse.data?.total ||
+        (Array.isArray(apiResponse.data) ? apiResponse.data.length : 0),
+      totalPages: apiResponse.data?.totalPages || 1,
+    };
+  },
+
+  getCouponById: async (couponId: string | number): Promise<Coupon> => {
+    const apiResponse = await apiService.get(`/admin/coupons/${couponId}`);
+    return apiResponse.data;
+  },
+
+  createCoupon: async (createCouponPayload: CreateCouponDto): Promise<Coupon> => {
+    const apiResponse = await apiService.post("/admin/coupons", createCouponPayload);
+    return apiResponse.data;
+  },
+
+  updateCoupon: async (
+    couponId: string | number,
+    updateCouponPayload: UpdateCouponDto
+  ): Promise<Coupon> => {
+    const apiResponse = await apiService.put(`/admin/coupons/${couponId}`, updateCouponPayload);
+    return apiResponse.data;
+  },
+
+  toggleCouponStatus: async (
+    couponId: string | number
+  ): Promise<{ id: string; status: string; message: string }> => {
+    const apiResponse = await apiService.patch(`/admin/coupons/${couponId}/status`);
+    return apiResponse.data;
+  },
+
+  deleteCoupon: async (couponId: string | number): Promise<void> => {
+    await apiService.delete(`/admin/coupons/${couponId}`);
+  },
+
+  getCoursesForSelect: async (): Promise<
+    Array<{ id: string; title: string; price: number; slug: string }>
+  > => {
     try {
-      const res = await apiService.get("/admin/coupons", { params });
-      return {
-        items: Array.isArray(res.data) ? res.data : (res.data?.items || []),
-        total: res.data?.total || (Array.isArray(res.data) ? res.data.length : 0),
-      };
+      const apiResponse = await apiService.get("/courses");
+      return Array.isArray(apiResponse.data)
+        ? apiResponse.data
+        : apiResponse.data?.items || [];
     } catch {
-      return {
-        items: [
-          {
-            id: "cp-1",
-            code: "BRIGHT10",
-            discount_type: "Percentage",
-            discount_value: 10,
-            usage_limit: 100,
-            used_count: 14,
-            is_active: true,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-          {
-            id: "cp-2",
-            code: "CHAO2026",
-            discount_type: "Fixed",
-            discount_value: 5000,
-            usage_limit: 50,
-            used_count: 8,
-            is_active: true,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-        ],
-        total: 2,
-      };
+      return [];
     }
-  },
-
-  createCoupon: async (data: CreateCouponDto): Promise<Coupon> => {
-    const res = await apiService.post("/admin/coupons", data);
-    return res.data;
-  },
-
-  updateCoupon: async (id: string, data: Partial<CreateCouponDto>): Promise<Coupon> => {
-    const res = await apiService.put(`/admin/coupons/${id}`, data);
-    return res.data;
-  },
-
-  deleteCoupon: async (id: string): Promise<void> => {
-    await apiService.delete(`/admin/coupons/${id}`);
   },
 };

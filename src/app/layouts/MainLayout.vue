@@ -242,19 +242,42 @@
           <!-- Divider -->
           <div class="h-[1px] bg-[#33403F] my-2"></div>
 
-          <!-- Ngân hàng & Email (Vô hiệu hóa - Đấu nối tự động PayOS & Resend) -->
-          <div
-            title="Cấu hình tự động qua cổng PayOS Webhook & Resend"
-            class="flex items-center justify-between gap-3 h-[46px] px-3 rounded-[10px] text-[#AEB8BB] opacity-60 cursor-not-allowed select-none"
+          <!-- Ngân hàng & Email -->
+          <router-link
+            to="/settings/bank-email"
+            @click="isMobileMenuOpen = false"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/settings/bank-email') || isActive('/email-templates')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
           >
-            <span class="flex items-center gap-3">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-                <rect x="3" y="6" width="18" height="13" rx="2"></rect>
-                <path d="M3 10h18M7 15h3"></path>
-              </svg>
-              <span>Ngân hàng & Email</span>
-            </span>
-          </div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <rect x="3" y="6" width="18" height="13" rx="2"></rect>
+              <path d="M3 10h18M7 15h3"></path>
+            </svg>
+            <span>Ngân hàng & Email</span>
+          </router-link>
+
+          <!-- Chính sách & Hỏi đáp -->
+          <router-link
+            to="/settings/policy-faq"
+            @click="isMobileMenuOpen = false"
+            :class="[
+              'flex items-center gap-3 h-[46px] px-3 rounded-[10px] transition-colors',
+              isActive('/settings/policy-faq')
+                ? 'bg-[#0B6E6E] text-white font-semibold'
+                : 'text-[#D5DCDE] hover:bg-[#27373C] hover:text-white'
+            ]"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>Chính sách & Hỏi đáp</span>
+          </router-link>
 
           <!-- Giao diện & Banner -->
           <router-link
@@ -408,7 +431,13 @@ function isActive(path: string): boolean {
   if (path === "/dashboard") {
     return route.path === "/dashboard";
   }
-  return route.path.startsWith(path);
+  if (path === "/settings") {
+    return route.path === "/settings" || route.path === "/banners";
+  }
+  if (path === "/courses") {
+    return route.path.startsWith("/courses");
+  }
+  return route.path === path || route.path.startsWith(path + "/");
 }
 
 async function handleLogout() {

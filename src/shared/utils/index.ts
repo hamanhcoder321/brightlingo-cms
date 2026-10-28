@@ -54,6 +54,7 @@ export function getErrorMessage(
 }
 
 const DEV_FRONTEND_URL = "http://localhost:3000";
+const PROD_FRONTEND_URL = "https://brightlingo-fe.vercel.app";
 
 /**
  * URL website khách hàng (VITE_FRONTEND_URL), dùng cho nút "Xem trang", preview và copy link.
@@ -63,7 +64,7 @@ export function getFrontendUrl(): string {
   const raw = (import.meta.env.VITE_FRONTEND_URL || "").trim().replace(/\/+$/, "");
   if (raw) return /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
   if (import.meta.env.PROD) {
-    console.error("[cms] Thiếu VITE_FRONTEND_URL; link xem trang đang trỏ localhost.");
+    return PROD_FRONTEND_URL;
   }
   return DEV_FRONTEND_URL;
 }

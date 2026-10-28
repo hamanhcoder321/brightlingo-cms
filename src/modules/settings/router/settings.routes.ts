@@ -16,6 +16,26 @@ export const settingsRoutes: RouteRecordRaw[] = [
           requiresAuth: true,
         },
       },
+      {
+        path: "bank-email",
+        alias: ["/email-templates", "/payment-email"],
+        name: "bank-email",
+        component: () => import("../pages/BankEmailPage.vue"),
+        meta: {
+          title: "Ngân hàng & Email",
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "policy-faq",
+        alias: ["/policy-faq", "/faq"],
+        name: "policy-faq",
+        component: () => import("../pages/PolicyFaqPage.vue"),
+        meta: {
+          title: "Chính sách & Hỏi đáp",
+          requiresAuth: true,
+        },
+      },
     ],
   },
   {

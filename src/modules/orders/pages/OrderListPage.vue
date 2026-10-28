@@ -96,6 +96,19 @@
 
         <button
           type="button"
+          @click="statusFilter = 'Expired'"
+          :class="[
+            'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[14px] cursor-pointer transition-colors',
+            statusFilter === 'Expired'
+              ? 'bg-[#E6F2F0] text-[#08585A]'
+              : 'bg-transparent text-[#4C5A60] hover:text-[#1D2A2E]'
+          ]"
+        >
+          Hết hạn ({{ expiredCount }})
+        </button>
+
+        <button
+          type="button"
           @click="statusFilter = 'Cancelled'"
           :class="[
             'h-[38px] px-3.5 rounded-[8px] border-0 font-sans font-semibold text-[14px] cursor-pointer transition-colors',
@@ -197,7 +210,7 @@
                     : 'bg-[#ECE7DE] text-[#4C5A60]'
                 ]"
               >
-                {{ order.status === 'Paid' ? 'Đã thanh toán' : (order.status === 'Pending' ? 'Chờ thanh toán' : 'Đã hủy') }}
+                {{ order.status === 'Paid' ? 'Đã thanh toán' : (order.status === 'Pending' ? 'Chờ thanh toán' : (order.status === 'Expired' ? 'Hết hạn' : 'Đã hủy')) }}
               </span>
             </td>
 
@@ -260,6 +273,7 @@ const selectedOrder = ref<Order | null>(null);
 const paidCount = computed(() => orders.value.filter((o) => o.status === "Paid").length);
 const pendingCount = computed(() => orders.value.filter((o) => o.status === "Pending").length);
 const cancelledCount = computed(() => orders.value.filter((o) => o.status === "Cancelled").length);
+const expiredCount = computed(() => orders.value.filter((o) => o.status === "Expired").length);
 
 const filteredOrders = computed(() => {
   return orders.value.filter((o) => {

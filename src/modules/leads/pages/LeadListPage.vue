@@ -207,7 +207,7 @@
             <!-- Nguồn đầu vào -->
             <td class="py-3.5 px-3">
               <span class="inline-block px-2.5 py-0.5 rounded-full text-[12px] font-semibold bg-[#EAE6DE] text-[#1D2A2E]">
-                {{ lead.utm_source || 'Trang chủ' }}
+                {{ formatLeadSource(lead.utm_source) }}
               </span>
               <div v-if="lead.utm_campaign" class="text-[11px] text-[#78888D] font-mono mt-0.5">
                 {{ lead.utm_campaign }}
@@ -345,6 +345,16 @@ const toast = inject<any>("toast", {
 const leads = ref<ConsultationLead[]>([]);
 const isLoading = ref(false);
 const searchQuery = ref("");
+
+function formatLeadSource(src?: string | null): string {
+  if (!src) return 'Trang chủ';
+  const s = src.toLowerCase().trim();
+  if (s.includes('vercel.com') || s.includes('vercel.app') || s.includes('localhost')) {
+    return 'Trang chủ';
+  }
+  return src;
+}
+
 const statusFilter = ref("");
 
 // Stats State (Hiển thị ngay trên các Tabs lọc)

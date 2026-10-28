@@ -51,6 +51,7 @@
                 v-model="form.slug"
                 type="text"
                 required
+                @input="isManualSlug = true"
                 placeholder="me-day-con-tieng-anh"
                 class="flex-1 min-w-0 h-[46px] border-0 px-3 text-[16px] outline-none"
               />
@@ -526,6 +527,7 @@
               id="seo-title"
               v-model="form.seoTitle"
               type="text"
+              @input="isManualSeoTitle = true"
               placeholder="VD: Mẹ dạy con tiếng Anh tại nhà – Video & PDF | EngNest"
               class="h-12 border-[1.5px] border-[#D8D2C7] focus:border-[#0B6E6E] rounded-xl px-3.5 text-[15px] outline-none transition-colors"
             />
@@ -846,6 +848,8 @@ const showDeleteModal = ref(false);
 
 const categories = ref<CourseCategory[]>([]);
 const allowCoupon = ref(false);
+const isManualSlug = ref(false);
+const isManualSeoTitle = ref(false);
 const mainKeyword = ref("mẹ dạy con tiếng anh");
 const imageAlt = ref("Mẹ đọc truyện tiếng Anh cho con");
 const lastSavedText = ref("Chưa lưu thay đổi");
@@ -921,18 +925,18 @@ const form = reactive({
   title: "",
   slug: "",
   categoryId: "communication",
-  tagBadge: "32 video · 6 PDF · Audio",
-  duration: "9 giờ",
-  description: "Lộ trình 8 tuần, mỗi ngày 15 phút: bố mẹ – kể cả khi không giỏi tiếng Anh – vẫn tự tin trò chuyện tiếng Anh cùng con 4–10 tuổi.",
-  price: 399000,
-  originalPrice: 699000,
-  image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+  tagBadge: "",
+  duration: "",
+  description: "",
+  price: 0,
+  originalPrice: 0,
+  image: "",
   videoUrl: "",
-  resourceLink: "https://drive.google.com/drive/folders/tai-lieu-brightlingo-vip",
-  status: "PUBLISHED",
+  resourceLink: "",
+  status: "DRAFT",
   isFeatured: false,
-  seoTitle: "Mẹ dạy con tiếng Anh tại nhà – Video & PDF | EngNest",
-  seoDescription: "Lộ trình 8 tuần cho bố mẹ không giỏi tiếng Anh vẫn dạy con 4–10 tuổi. Mua 1 lần học trọn đời, thanh toán QR, nhận link qua email ngay.",
+  seoTitle: "",
+  seoDescription: "",
 });
 
 // Email delivery template
@@ -949,8 +953,7 @@ Mẹo: lưu email này lại để học lâu dài. Cần hỗ trợ, liên hệ
 
 // Dynamic benefits
 const benefits = ref<CourseBenefit[]>([
-  { id: "b1", title: "Nói tiếng Anh cùng con mỗi ngày" },
-  { id: "b2", title: "Phát âm đủ chuẩn để dạy con" },
+  { id: "b1", title: "" },
 ]);
 
 function addBenefit() {
@@ -964,16 +967,9 @@ function removeBenefit(index: number) {
 const sections = ref<CourseSection[]>([
   {
     id: "s1",
-    title: "Phần 1 · Mẹ chuẩn bị: phát âm & 100 câu nền tảng",
+    title: "",
     lessons: [
-      { id: "l1", title: "Bài 1: Vì sao mẹ không cần giỏi vẫn dạy được con", type: "Video", duration: "12:40" },
-    ],
-  },
-  {
-    id: "s2",
-    title: "Phần 2 · Tiếng Anh trong sinh hoạt hằng ngày",
-    lessons: [
-      { id: "l2", title: "Bài 2: Chào buổi sáng & Đánh răng cùng bé", type: "Video", duration: "10:15" },
+      { id: "l1", title: "", type: "Video", duration: "" },
     ],
   },
 ]);
@@ -1003,8 +999,8 @@ function removeLesson(sec: CourseSection, lIndex: number) {
 // Dynamic FAQs
 const faqs = ref<{ question: string; answer: string }[]>([
   {
-    question: "Con tôi 3 tuổi học được không?",
-    answer: "Được bạn nhé, lộ trình áp dụng rất hiệu quả cho trẻ từ 3 đến 10 tuổi cùng bố mẹ.",
+    question: "",
+    answer: "",
   },
 ]);
 
@@ -1033,12 +1029,11 @@ function formatVND(val: number): string {
 }
 
 function onTitleInput() {
-  // If slug is empty or currently matches an auto-generated version, keep it updated
-  if (!form.slug && form.title) {
+  if (!isManualSlug.value) {
     form.slug = generateSlug(form.title);
   }
-  if (!form.seoTitle) {
-    form.seoTitle = `${form.title} | EngNest`;
+  if (!isManualSeoTitle.value) {
+    form.seoTitle = form.title ? `${form.title} | EngNest` : "";
   }
 }
 
@@ -1103,11 +1098,17 @@ const generatedSchemaJson = computed(() => {
 // Load Course Data for Editing
 async function loadCourse() {
   if (!isEdit.value) {
-    // Default blank form with unique slug
+    // Khởi tạo form rỗng mặc định ở trạng thái Nháp (Tasks H1, H3)
     form.title = "";
     form.slug = "";
-    form.price = 199000;
-    form.originalPrice = 399000;
+    form.tagBadge = "";
+    form.duration = "";
+    form.price = 0;
+    form.originalPrice = 0;
+    form.image = "";
+    form.videoUrl = "";
+    form.resourceLink = "";
+    form.status = "DRAFT";
     form.seoTitle = "";
     form.seoDescription = "";
     form.description = "";
@@ -1117,6 +1118,8 @@ async function loadCourse() {
   isLoading.value = true;
   try {
     const data = await courseApi.getCourseById(courseId.value);
+    isManualSlug.value = true;
+    isManualSeoTitle.value = true;
     if (data) {
       form.id = data.id;
       form.title = data.title || data.name || "";

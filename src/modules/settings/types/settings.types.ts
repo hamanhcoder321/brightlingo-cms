@@ -53,8 +53,15 @@ export interface SystemSettings {
   vietqr_bank_code: string;
   vietqr_account_number: string;
   vietqr_account_name: string;
+  order_code_prefix?: string;
 
-  // 2. Liên kết, mạng xã hội & cộng đồng
+  // 2. Email bàn giao tự động
+  email_sender_name?: string;
+  email_sender_address?: string;
+  delivery_email_subject?: string;
+  delivery_email_body?: string;
+
+  // 3. Liên kết, mạng xã hội & cộng đồng
   zalo_url: string;
   fanpage_url: string;
   community_group_url: string;
@@ -65,12 +72,12 @@ export interface SystemSettings {
   tax_id: string;
   company_address: string;
 
-  // 3. Giao diện & Banner
+  // 4. Giao diện & Banner
   homepage_sections: HomepageSectionConfig[];
   banners: BannerItemConfig[];
   active_banners?: Record<string, BannerItemConfig | null>;
 
-  // 4. SEO & Google
+  // 5. SEO & Google
   meta_title: string;
   meta_description: string;
   og_image: string;
@@ -91,8 +98,10 @@ export interface SystemSettings {
   schema_breadcrumb: boolean;
   schema_article: boolean;
 
-  // 5. Diagnostics
+  // 6. Diagnostics & FAQ/Policies
   sitemap_last_generated?: string;
   sitemap_url_count?: number;
   missing_seo_image_count?: number;
+  faqs_list?: Array<{ question: string; answer: string }>;
+  policies_content?: Record<string, any>;
 }

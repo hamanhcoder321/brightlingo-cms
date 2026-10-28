@@ -22,10 +22,6 @@ const routes: RouteRecordRaw[] = [
   ...orderRoutes,
   ...couponRoutes,
   ...leadRoutes,
-  {
-    path: "/email-templates/:pathMatch(.*)*",
-    redirect: "/dashboard",
-  },
   ...settingsRoutes,
   ...auditLogRoutes,
   {

@@ -782,7 +782,7 @@ onMounted(() => {
             <input
               v-model="selectedBanner.title"
               type="text"
-              placeholder="Học tiếng Anh tại nhà – cho bạn và cho con"
+              placeholder="Tự học tiếng Anh tại nhà"
               class="w-full px-3 py-2 rounded-[9px] border border-[#D8D2C7] bg-white text-[13px] text-[#1D2A2E] focus:outline-none focus:border-[#0B6E6E]"
             />
           </div>

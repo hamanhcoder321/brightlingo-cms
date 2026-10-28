@@ -79,10 +79,10 @@ export const DEFAULT_BANNERS: BannerItemConfig[] = [
     status: "active",
     desktopImage: "",
     mobileImage: "",
-    altText: "Mẹ và con cùng học sách tranh tiếng Anh",
-    title: "Học tiếng Anh tại nhà – cho bạn và cho con",
+    altText: "Học viên EngNest học tiếng Anh tại nhà",
+    title: "Tự học tiếng Anh tại nhà",
     subtitle:
-      "Khóa học video & tài liệu PDF ngắn gọn, dùng được ngay. Mua một lần, nhận link học qua email trong vài phút, học trọn đời – không cần tạo tài khoản.",
+      "Khóa học dạng video, tài liệu PDF tiện lợi, dùng được ngay. Mua một lần, nhận link học qua email trong vài phút, học trọn đời – không cần tạo tài khoản.",
     badgeText: "Tiếng Anh thực chiến cho người Việt",
     ctaText: "Xem các khóa học",
     ctaLink: "/#khoa-hoc-noi-bat",

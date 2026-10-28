@@ -75,7 +75,7 @@
     <section class="bg-white border border-[#E5E0D7] rounded-[16px] p-5 md:p-6 flex flex-col gap-4 shadow-sm">
       <div class="flex justify-between items-baseline gap-3 flex-wrap">
         <h2 class="m-0 text-[19px] font-semibold text-[#1D2A2E]">Doanh thu 14 ngày gần nhất</h2>
-        <span class="text-[14px] text-[#4C5A60]">triệu đồng / ngày</span>
+        <span class="text-[14px] text-[#4C5A60]">VNĐ / ngày (k = nghìn, tr = triệu)</span>
       </div>
 
       <!-- Bars Container (Scrollable on mobile) -->
@@ -369,15 +369,16 @@ async function loadRealStats(period?: string) {
       if (coursesList.length > 0) {
         performanceCourses.value = coursesList.map((c: any) => {
           const views = Number(c.views_count) || 0;
-          const convRate = views > 0 ? ((c.paid / views) * 100).toFixed(1) : "0,0";
+          const convNum = views > 0 ? ((Number(c.paid) || 0) / views) * 100 : 0;
+          const convRateStr = convNum.toFixed(1);
           return {
             name: c.name,
             slug: c.slug,
             views: new Intl.NumberFormat("vi-VN").format(views),
             created: c.created || 0,
             paid: c.paid || 0,
-            convText: `${convRate.replace(".", ",")}%`,
-            convPercent: Math.min(100, Math.round((Number(convRate) / 2) * 100)),
+            convText: `${convRateStr.replace(".", ",")}%`,
+            convPercent: views > 0 ? Math.min(100, Math.max(0, Math.round(convNum))) : 0,
             revenue: new Intl.NumberFormat("vi-VN").format(c.revenue || 0) + "đ",
           };
         });

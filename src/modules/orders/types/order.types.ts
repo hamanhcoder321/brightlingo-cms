@@ -1,6 +1,6 @@
 import type { BaseEntity } from "@shared/types";
 
-export type OrderStatus = "Pending" | "Paid" | "Cancelled";
+export type OrderStatus = "Pending" | "Paid" | "Cancelled" | "Expired";
 
 export interface OrderPayment extends BaseEntity {
   order_id: string;

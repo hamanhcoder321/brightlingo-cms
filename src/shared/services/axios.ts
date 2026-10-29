@@ -4,7 +4,7 @@ import { getCookie, deleteCookie } from "@shared/utils";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "/api",
-  timeout: 15000,
+  timeout: 35000,
   headers: {
     "Content-Type": "application/json",
   },

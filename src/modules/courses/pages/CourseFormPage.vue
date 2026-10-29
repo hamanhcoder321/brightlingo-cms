@@ -41,8 +41,11 @@
           </label>
 
           <div class="flex flex-col gap-1.5">
-            <label for="slug" class="font-medium text-[15px]">Đường dẫn (slug) *</label>
-            <div class="flex border-[1.5px] border-[#D8D2C7] focus-within:border-[#0B6E6E] rounded-xl overflow-hidden transition-colors">
+            <label for="slug" class="font-medium text-[15px] flex items-center justify-between">
+              <span>Đường dẫn (slug) *</span>
+              <span v-if="slugError" class="text-xs font-semibold text-rose-600">{{ slugError }}</span>
+            </label>
+            <div :class="['flex border-[1.5px] rounded-xl overflow-hidden transition-colors', slugError ? 'border-rose-500 focus-within:border-rose-600 bg-rose-50/20' : 'border-[#D8D2C7] focus-within:border-[#0B6E6E]']">
               <span class="flex items-center px-3 bg-[#FAF7F2] text-[#4C5A60] border-r border-[#E5E0D7] text-[15px] select-none whitespace-nowrap">
                 engnest.vn/khoa-hoc/
               </span>
@@ -51,12 +54,15 @@
                 v-model="form.slug"
                 type="text"
                 required
-                @input="isManualSlug = true"
+                @input="() => { isManualSlug = true; slugError = ''; }"
                 placeholder="me-day-con-tieng-anh"
                 class="flex-1 min-w-0 h-[46px] border-0 px-3 text-[16px] outline-none"
               />
             </div>
-            <span class="text-[13px] text-[#4C5A60]">
+            <span v-if="slugError" class="text-[13px] text-rose-600 font-medium">
+              {{ slugError }}
+            </span>
+            <span v-else class="text-[13px] text-[#4C5A60]">
               Chỉ chữ thường không dấu, số và dấu “-”. Đổi slug sau khi đã chạy quảng cáo sẽ làm hỏng link cũ.
             </span>
           </div>
@@ -850,8 +856,9 @@ const categories = ref<CourseCategory[]>([]);
 const allowCoupon = ref(false);
 const isManualSlug = ref(false);
 const isManualSeoTitle = ref(false);
-const mainKeyword = ref("mẹ dạy con tiếng anh");
-const imageAlt = ref("Mẹ đọc truyện tiếng Anh cho con");
+const slugError = ref("");
+const mainKeyword = ref("");
+const imageAlt = ref("");
 const lastSavedText = ref("Chưa lưu thay đổi");
 
 // File upload states & handlers (Tải từ laptop lên CMS)
@@ -1169,6 +1176,7 @@ async function loadCourse() {
 
 // Save (Create or Update)
 async function handleSave() {
+  slugError.value = "";
   if (!form.title.trim()) {
     showToast("Vui lòng nhập tên khóa học.");
     return;
@@ -1239,7 +1247,24 @@ async function handleSave() {
     }
   } catch (err) {
     console.error("Lỗi khi lưu khóa học:", err);
-    showToast("Đã xảy ra lỗi khi lưu thông tin khóa học. Vui lòng thử lại.");
+    const errorMsg =
+      (err as any)?.response?.data?.message ||
+      (err as any)?.message ||
+      "Đã xảy ra lỗi khi lưu thông tin khóa học. Vui lòng thử lại.";
+    showToast(errorMsg);
+    if (
+      typeof errorMsg === "string" &&
+      (errorMsg.toLowerCase().includes("slug") ||
+        errorMsg.includes("đường dẫn") ||
+        errorMsg.includes("Đường dẫn"))
+    ) {
+      slugError.value = errorMsg;
+      const el = document.getElementById("slug");
+      if (el) {
+        el.focus();
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
   } finally {
     isSubmitting.value = false;
   }

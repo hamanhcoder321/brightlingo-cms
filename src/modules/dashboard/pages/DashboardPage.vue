@@ -323,7 +323,7 @@ async function loadRealStats(period?: string) {
       const paid = Number(summary.paidOrders || summary.kpi?.paidOrders || 0);
       const total = Number(summary.totalOrders || summary.kpi?.totalOrders || 0);
       const pending = Number(summary.pendingOrders || summary.kpi?.pendingOrders || 0);
-      const leads = Number(summary.totalLeads ?? summary.newLeads ?? 0);
+      const leads = Number(summary.newLeads ?? summary.kpi?.newLeads ?? 0);
       const convRate = total > 0 ? Math.round((paid / total) * 100) : 0;
 
       currentMetrics.value.revenue = new Intl.NumberFormat("vi-VN").format(totalRev) + "đ";

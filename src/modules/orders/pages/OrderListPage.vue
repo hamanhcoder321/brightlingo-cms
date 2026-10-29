@@ -165,7 +165,7 @@
 
           <tr
             v-else
-            v-for="order in filteredOrders"
+            v-for="order in paginatedOrders"
             :key="order.id"
             class="border-b border-[#EFEBE4] hover:bg-[#FAF7F2]/60 transition-colors"
           >
@@ -243,6 +243,42 @@
       </table>
     </div>
 
+    <!-- Pagination Controls (M4) -->
+    <div
+      v-if="filteredOrders.length > 0"
+      class="flex flex-wrap items-center justify-between gap-4 py-3 px-1 border-t border-[#E5E0D7] text-[14px] text-[#4C5A60]"
+    >
+      <div>
+        Hiển thị <span class="font-semibold text-[#1D2A2E]">{{ (currentPage - 1) * pageSize + 1 }}</span> –
+        <span class="font-semibold text-[#1D2A2E]">{{ Math.min(currentPage * pageSize, filteredOrders.length) }}</span>
+        trên tổng số <span class="font-semibold text-[#1D2A2E]">{{ filteredOrders.length }}</span> đơn hàng
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <button
+          type="button"
+          :disabled="currentPage <= 1"
+          @click="currentPage--"
+          class="h-9 px-3 rounded-lg border border-[#D8D2C7] bg-white hover:bg-[#FAF7F2] text-[#1D2A2E] font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        >
+          ← Trang trước
+        </button>
+
+        <span class="px-2 font-medium text-[#1D2A2E]">
+          Trang {{ currentPage }} / {{ totalPages }}
+        </span>
+
+        <button
+          type="button"
+          :disabled="currentPage >= totalPages"
+          @click="currentPage++"
+          class="h-9 px-3 rounded-lg border border-[#D8D2C7] bg-white hover:bg-[#FAF7F2] text-[#1D2A2E] font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        >
+          Trang sau →
+        </button>
+      </div>
+    </div>
+
     <!-- Resend Email Confirmation Modal (BR-06) -->
     <ResendConfirmModal
       :is-open="isModalOpen"
@@ -254,7 +290,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { Search, RotateCcw, Send } from "lucide-vue-next";
 import { formatCurrency } from "@shared/utils";
 import { formatDateTime } from "@shared/utils/date.utils";
@@ -286,6 +322,22 @@ const filteredOrders = computed(() => {
     const matchStatus = !statusFilter.value || o.status === statusFilter.value;
     return matchSearch && matchStatus;
   });
+});
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredOrders.value.length / pageSize.value) || 1;
+});
+
+const paginatedOrders = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  return filteredOrders.value.slice(start, start + pageSize.value);
+});
+
+watch([searchQuery, statusFilter], () => {
+  currentPage.value = 1;
 });
 
 async function fetchOrders() {

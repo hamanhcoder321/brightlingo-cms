@@ -207,6 +207,8 @@
                     ? 'bg-[#E4F3EA] text-[#155C35]'
                     : order.status === 'Pending'
                     ? 'bg-[#FEF3EB] text-[#B25E09]'
+                    : order.status === 'Cancelled'
+                    ? 'bg-[#FEE2E2] text-[#991B1B]'
                     : 'bg-[#ECE7DE] text-[#4C5A60]'
                 ]"
               >

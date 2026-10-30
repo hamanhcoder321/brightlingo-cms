@@ -288,6 +288,7 @@ const performanceCourses = ref<any[]>([]);
 const statusConfig: Record<string, { label: string; style: string }> = {
   paid: { label: "Đã thanh toán", style: "background: #E4F3EA; color: #155C35;" },
   wait: { label: "Chờ thanh toán", style: "background: #FDF0E3; color: #8A3F12;" },
+  cancel: { label: "Đã hủy", style: "background: #FEE2E2; color: #991B1B;" },
   exp: { label: "Hết hạn QR", style: "background: #ECE7DE; color: #4C5A60;" },
 };
 
@@ -298,7 +299,7 @@ interface RecentOrderRow {
   email: string;
   course: string;
   amount: string;
-  k: "paid" | "wait" | "exp";
+  k: "paid" | "wait" | "cancel" | "exp";
   mail: string;
   time: string;
 }
@@ -358,7 +359,7 @@ async function loadRealStats(period?: string) {
           email: o.customer_email || "—",
           course: o.course_title || "Khóa học",
           amount: new Intl.NumberFormat("vi-VN").format(o.total_amount) + "đ",
-          k: o.status === "PAID" ? "paid" : o.status === "PENDING" ? "wait" : "exp",
+          k: o.status === "PAID" ? "paid" : o.status === "PENDING" ? "wait" : o.status === "CANCELLED" ? "cancel" : "exp",
           mail: o.paid_at ? "Đã xác nhận" : "—",
           time: new Date(o.created_at).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) + " " + new Date(o.created_at).toLocaleDateString("vi-VN"),
         }));

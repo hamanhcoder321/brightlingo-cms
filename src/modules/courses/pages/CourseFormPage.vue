@@ -87,7 +87,7 @@
               <input
                 v-model="form.tagBadge"
                 type="text"
-                placeholder="32 video · 6 PDF · Audio"
+                placeholder="VD: 32 video · 6 PDF · Audio"
                 class="h-12 border-[1.5px] border-[#D8D2C7] focus:border-[#0B6E6E] rounded-xl px-3.5 text-[15px] outline-none transition-colors"
               />
             </label>
@@ -98,7 +98,7 @@
               <input
                 v-model="form.duration"
                 type="text"
-                placeholder="9 giờ"
+                placeholder="VD: 9 giờ"
                 class="h-12 border-[1.5px] border-[#D8D2C7] focus:border-[#0B6E6E] rounded-xl px-3.5 text-[15px] outline-none transition-colors"
               />
             </label>
@@ -1133,7 +1133,7 @@ async function loadCourse() {
       form.slug = data.slug || "";
       form.categoryId = data.categoryId || data.category_id || "communication";
       form.tagBadge = data.tagBadge || data.tag_badge || "";
-      form.duration = data.duration || "9 giờ";
+      form.duration = data.duration || "";
       form.description = data.description || "";
       form.price = data.price || 0;
       form.originalPrice = data.originalPrice || data.original_price || data.price;

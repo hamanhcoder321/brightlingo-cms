@@ -16,7 +16,7 @@ const fallbackCourses: Course[] = [
     duration: "9 giờ",
     description: "Lộ trình 8 tuần, mỗi ngày 15 phút: bố mẹ – kể cả khi không giỏi tiếng Anh – vẫn tự tin trò chuyện tiếng Anh cùng con 4–10 tuổi.",
     image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
-    resourceLink: "https://drive.google.com/drive/folders/tai-lieu-me-day-con-brightlingo",
+    resourceLink: "https://drive.google.com/drive/folders/tai-lieu-me-day-con-engnest",
     seoTitle: "Mẹ dạy con tiếng Anh tại nhà – Video & PDF | EngNest",
     seoDescription: "Lộ trình 8 tuần cho bố mẹ không giỏi tiếng Anh vẫn dạy con 4–10 tuổi. Mua 1 lần học trọn đời, thanh toán QR, nhận link qua email ngay.",
     benefits: [

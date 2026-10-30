@@ -37,7 +37,7 @@
             v-model="form.email"
             type="email"
             required
-            placeholder="admin@brightlingo.vn"
+            placeholder="admin@engnest.vn"
             class="h-11 px-3.5 rounded-[10px] border-[1.5px] border-[#D8D2C7] focus:border-[#0B6E6E] text-[15px] outline-none text-[#1D2A2E] transition-colors"
           />
         </div>
@@ -83,7 +83,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const form = reactive({
-  email: "admin@brightlingo.vn",
+  email: "admin@engnest.vn",
   password: "",
 });
 

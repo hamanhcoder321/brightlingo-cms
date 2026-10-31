@@ -149,20 +149,6 @@
               </span>
             </div>
           </div>
-
-          <div class="flex flex-wrap items-center gap-3 border-[1.5px] border-dashed border-[#D8D2C7] rounded-xl p-3 bg-[#FAF7F2] opacity-60 cursor-not-allowed select-none">
-            <label class="flex gap-2.5 items-center text-[15px] cursor-not-allowed pointer-events-none">
-              <input
-                v-model="allowCoupon"
-                type="checkbox"
-                disabled
-                class="w-5 h-5 accent-[#0B6E6E] cursor-not-allowed"
-              />
-              <span>Cho phép áp dụng mã giảm giá cho khóa này</span>
-            </label>
-            <span class="bg-[#ECE7DE] text-[#4C5A60] text-[12px] font-bold px-2 py-0.5 rounded">GĐ 2</span>
-            <span class="text-[13px] text-[#4C5A60]">Tính năng Mã giảm giá sẽ phát triển ở Giai đoạn 2.</span>
-          </div>
         </section>
 
         <!-- 3. Hình ảnh & video -->
@@ -853,7 +839,6 @@ const isDeleting = ref(false);
 const showDeleteModal = ref(false);
 
 const categories = ref<CourseCategory[]>([]);
-const allowCoupon = ref(false);
 const isManualSlug = ref(false);
 const isManualSeoTitle = ref(false);
 const slugError = ref("");

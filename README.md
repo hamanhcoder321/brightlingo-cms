@@ -79,11 +79,18 @@ npm install
 ```
 
 ### 2. Thiết lập môi trường (.env):
-File `.env` đã được cấu hình trỏ về backend `lingo-api`:
+Tạo file `.env` từ file mẫu `.env.example`:
+```bash
+cp .env.example .env
+```
+*(Trên Windows PowerShell: `Copy-Item .env.example .env`)*
+
+Cấu hình các biến môi trường trỏ về backend `lingo-api`:
 ```env
 VITE_API_BASE_URL=http://localhost:4000/api
 VITE_APP_NAME="BrightLingo CMS"
 VITE_APP_ENV=development
+VITE_FRONTEND_URL=http://localhost:3000
 ```
 
 ### 3. Chạy môi trường Development:

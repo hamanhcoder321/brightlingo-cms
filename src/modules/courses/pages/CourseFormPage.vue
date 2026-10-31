@@ -971,15 +971,63 @@ function removeBenefit(index: number) {
 }
 
 // Dynamic curriculum sections
-const sections = ref<CourseSection[]>([
+// Giáo trình chuẩn hóa từ tài liệu học tập chính thức
+const defaultCourseSections: CourseSection[] = [
   {
-    id: "s1",
-    title: "",
+    id: "sec-1",
+    title: "Phần 1: Bài 01 - Greetings & Introductions (Chào hỏi và giới thiệu bản thân)",
     lessons: [
-      { id: "l1", title: "", type: "Video", duration: "" },
+      { id: "s1-l1", title: "Video bài giảng: Welcome! (VOA Lesson 1)", type: "Video", duration: "12:00" },
+      { id: "s1-l2", title: "Từ vựng trọng tâm: Chào hỏi, giới thiệu tên và tạm biệt", type: "PDF", duration: "05:00" },
+      { id: "s1-l3", title: "Mẫu câu cần nhớ: Hỏi tên, xưng tên và đáp lại", type: "PDF", duration: "08:00" },
+      { id: "s1-l4", title: "Hội thoại luyện tập: Đoạn đối thoại thực tế Anna và Pete", type: "Audio", duration: "06:00" },
+      { id: "s1-l5", title: "Luyện tập và Tự đánh giá: Điền từ, xếp câu, thực hành nói", type: "PDF", duration: "15:00" },
     ],
   },
-]);
+  {
+    id: "sec-2",
+    title: "Phần 2: Bài 02 - Personal Information (Thông tin cá nhân cơ bản)",
+    lessons: [
+      { id: "s2-l1", title: "Video bài giảng: Hello, I'm Anna! (VOA Lesson 2)", type: "Video", duration: "10:00" },
+      { id: "s2-l2", title: "Từ vựng trọng tâm: Nơi đến, bạn bè, bạn cùng phòng", type: "PDF", duration: "05:00" },
+      { id: "s2-l3", title: "Mẫu câu cần nhớ: Động từ To Be với đại từ nhân xưng", type: "PDF", duration: "08:00" },
+      { id: "s2-l4", title: "Hội thoại luyện tập: Hỏi quê quán và chào đón bạn bè", type: "Audio", duration: "06:00" },
+      { id: "s2-l5", title: "Luyện tập và Tự đánh giá: Chia am/is/are, chọn đại từ nhân xưng", type: "PDF", duration: "15:00" },
+    ],
+  },
+  {
+    id: "sec-3",
+    title: "Phần 3: Bài 03 - Phone Conversations (Gọi điện và xác nhận thông tin)",
+    lessons: [
+      { id: "s3-l1", title: "Video bài giảng: I'm Here! (VOA Lesson 3)", type: "Video", duration: "11:00" },
+      { id: "s3-l2", title: "Từ vựng trọng tâm: Giao tiếp qua điện thoại, xin lỗi lịch sự", type: "PDF", duration: "05:00" },
+      { id: "s3-l3", title: "Mẫu câu cần nhớ: Xác nhận người nghe, xử lý gọi nhầm số", type: "PDF", duration: "08:00" },
+      { id: "s3-l4", title: "Hội thoại luyện tập: Đọc và ngắt nhịp số điện thoại chuẩn xác", type: "Audio", duration: "07:00" },
+      { id: "s3-l5", title: "Luyện tập và Tự đánh giá: Trắc nghiệm phản xạ và thực hành hội thoại", type: "PDF", duration: "15:00" },
+    ],
+  },
+  {
+    id: "sec-4",
+    title: "Phần 4: Bài 04 - Everyday Objects (Đồ vật quen thuộc hằng ngày)",
+    lessons: [
+      { id: "s4-l1", title: "Video bài giảng: What Is It? (VOA Lesson 4)", type: "Video", duration: "12:00" },
+      { id: "s4-l2", title: "Từ vựng trọng tâm: Đồ vật quen thuộc (Pen, Book, Bag, Map, Lamp)", type: "PDF", duration: "05:00" },
+      { id: "s4-l3", title: "Mẫu câu cần nhớ: Hỏi What is it?, Mạo từ A/An, Have/Has", type: "PDF", duration: "08:00" },
+      { id: "s4-l4", title: "Hội thoại luyện tập: Hỏi đáp về đồ vật trong túi xách", type: "Audio", duration: "06:00" },
+      { id: "s4-l5", title: "Luyện tập và Tự đánh giá: Điền a/an, trả lời câu hỏi thực hành", type: "PDF", duration: "15:00" },
+    ],
+  },
+  {
+    id: "sec-5",
+    title: "Phần 5: Tổng kết và Đáp án tham khảo",
+    lessons: [
+      { id: "s5-l1", title: "Đáp án tham khảo (Answer Key) chi tiết toàn bộ 4 bài học", type: "PDF", duration: "10:00" },
+      { id: "s5-l2", title: "Tài liệu học tập chính thức Ebook VIP trọn đời (11 trang PDF)", type: "PDF", duration: "Tải về" },
+    ],
+  },
+];
+
+const sections = ref<CourseSection[]>(JSON.parse(JSON.stringify(defaultCourseSections)));
 
 function addSection() {
   sections.value.push({
@@ -1155,8 +1203,17 @@ async function loadCourse() {
       }
 
       // Curriculum
-      if (data.curriculum?.sections && Array.isArray(data.curriculum.sections)) {
-        sections.value = data.curriculum.sections;
+      if (data.curriculum?.sections && Array.isArray(data.curriculum.sections) && data.curriculum.sections.length > 0) {
+        sections.value = data.curriculum.sections.map((s: any) => ({
+          ...s,
+          lessons: Array.isArray(s.lessons) ? s.lessons.map((l: any) => ({
+            ...l,
+            type: l.type || (l.badgeText?.toLowerCase().includes("pdf") || l.title?.toLowerCase().includes("pdf") ? "PDF" : l.badgeText?.toLowerCase().includes("audio") ? "Audio" : "Video"),
+            duration: l.duration || "12:00"
+          })) : []
+        }));
+      } else {
+        sections.value = JSON.parse(JSON.stringify(defaultCourseSections));
       }
 
       // FAQs

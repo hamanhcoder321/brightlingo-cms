@@ -939,7 +939,7 @@ const form = reactive({
   originalPrice: 0,
   image: "",
   videoUrl: "",
-  resourceLink: "",
+  resourceLink: "https://pub-7882fb2772604ee8b8c80f6aa7e66d0a.r2.dev/documents/engnest-tieng-anh-giao-tiep-co-ban.pdf",
   status: "DRAFT",
   isFeatured: false,
   seoTitle: "",
@@ -1114,7 +1114,7 @@ async function loadCourse() {
     form.originalPrice = 0;
     form.image = "";
     form.videoUrl = "";
-    form.resourceLink = "";
+    form.resourceLink = "https://pub-7882fb2772604ee8b8c80f6aa7e66d0a.r2.dev/documents/engnest-tieng-anh-giao-tiep-co-ban.pdf";
     form.status = "DRAFT";
     form.seoTitle = "";
     form.seoDescription = "";
@@ -1139,7 +1139,7 @@ async function loadCourse() {
       form.originalPrice = data.originalPrice || data.original_price || data.price;
       form.image = data.image || data.thumbnail || "";
       form.videoUrl = data.videoUrl || data.video_url || "";
-      form.resourceLink = data.resourceLink || data.resource_link || "";
+      form.resourceLink = data.resourceLink || data.resource_link || "https://pub-7882fb2772604ee8b8c80f6aa7e66d0a.r2.dev/documents/engnest-tieng-anh-giao-tiep-co-ban.pdf";
       form.status = String(data.status || "PUBLISHED").toUpperCase();
       form.isFeatured = Boolean(data.isFeatured);
       form.seoTitle = data.seoTitle || data.seo_title || data.title || "";
